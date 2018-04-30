@@ -32,7 +32,10 @@ namespace STVRogue.GameLogic
         public void disconnect(Bridge b)
         {
             Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
-            throw new NotImplementedException();
+            foreach (Node n in b.toNodes) {
+                n.disconnect(b);
+            }
+            startNode = b;
         }
 
         /* To calculate the level of the given node. */
