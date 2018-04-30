@@ -84,7 +84,7 @@ namespace STVRogue.GameLogic
             throw new NotImplementedException();
         }
         public bool isBridge(Bridge b) {
-            return ReferenceEquals(this, n);
+            return ReferenceEquals(this, b);
         }
     }
 
