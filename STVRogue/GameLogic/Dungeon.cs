@@ -39,7 +39,17 @@ namespace STVRogue.GameLogic
         }
 
         /* To calculate the level of the given node. */
-        public uint level(Node d) { throw new NotImplementedException(); }
+        public uint level(Node d) {
+            List<Node> pathToNode_d = shortestpath(startNode, d);
+            int level = 0;
+
+            for (int index = 0; index < pathToNode_d.Count(); ++index) {
+                if (isBridge(pathToNode_d[levelCount])) {
+                    levelCount++;
+                }
+            }
+            return level;
+        }
     }
 
     public class Node
@@ -73,6 +83,9 @@ namespace STVRogue.GameLogic
         {
             throw new NotImplementedException();
         }
+        public bool isBridge(Bridge b) {
+            return ReferenceEquals(this, n);
+        }
     }
 
     public class Bridge : Node
@@ -94,5 +107,7 @@ namespace STVRogue.GameLogic
             base.connect(nd);
             toNodes.Add(nd);
         }
+
+        
     }
 }
