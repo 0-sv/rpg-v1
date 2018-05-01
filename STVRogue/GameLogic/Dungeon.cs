@@ -14,7 +14,6 @@ namespace STVRogue.GameLogic
         public uint difficultyLevel;
         /* a constant multiplier that determines the maximum number of monster-packs per node: */
         public uint M;
-
         /* To create a new dungeon with the specified difficult level and capacity multiplier */
         public Dungeon(uint level, uint nodeCapacityMultiplier)
         {
@@ -41,11 +40,12 @@ namespace STVRogue.GameLogic
         /* To calculate the level of the given node. */
         public uint level(Node d) {
             List<Node> pathToNode_d = shortestpath(startNode, d);
-            int level = 0;
+            uint level = 0;
 
-            for (int index = 0; index < pathToNode_d.Count(); ++index) {
-                if (isBridge(pathToNode_d[levelCount])) {
-                    levelCount++;
+            for (int index = 0; index < pathToNode_d.Count(); index++) {
+                if (pathToNode_d[index].isBridge())
+                {
+                    level++;
                 }
             }
             return level;
@@ -83,15 +83,16 @@ namespace STVRogue.GameLogic
         {
             throw new NotImplementedException();
         }
-        public bool isBridge(Bridge b) {
-            return ReferenceEquals(this, b);
+        public bool isBridge()
+        {
+            return GetType() == (new Bridge("").GetType()) ;
         }
     }
 
     public class Bridge : Node
     {
         List<Node> fromNodes = new List<Node>();
-        List<Node> toNodes = new List<Node>();
+        public List<Node> toNodes = new List<Node>();
         public Bridge(String id) : base(id) { }
 
         /* Use this to connect the bridge to a node from the same zone. */
