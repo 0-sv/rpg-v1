@@ -43,7 +43,7 @@ namespace STVRogue.GameLogic
             uint level = 0;
 
             for (int index = 0; index < pathToNode_d.Count(); index++) {
-                if (pathToNode_d[index].isBridge())
+                if (pathToNode_d[index].isBridge)
                 {
                     level++;
                 }
@@ -58,6 +58,7 @@ namespace STVRogue.GameLogic
         public List<Node> neighbors = new List<Node>();
         public List<Pack> packs = new List<Pack>();
         public List<Item> items = new List<Item>();
+        public bool isBridge = false;
 
         public Node() { }
         public Node(String id) { this.id = id; }
@@ -83,10 +84,6 @@ namespace STVRogue.GameLogic
         {
             throw new NotImplementedException();
         }
-        public bool isBridge()
-        {
-            return false;
-        }
     }
 
     public class Bridge : Node
@@ -94,6 +91,7 @@ namespace STVRogue.GameLogic
         List<Node> fromNodes = new List<Node>();
         public List<Node> toNodes = new List<Node>();
         public Bridge(String id) : base(id) { }
+        public bool isBridge = true;
 
         /* Use this to connect the bridge to a node from the same zone. */
         public void connectToNodeOfSameZone(Node nd)
@@ -107,11 +105,6 @@ namespace STVRogue.GameLogic
         {
             base.connect(nd);
             toNodes.Add(nd);
-        }
-
-        new public bool isBridge()
-        {
-            return true;
         }
     }
 }
