@@ -24,7 +24,38 @@ namespace STVRogue.GameLogic
         }
 
         /* Return a shortest path between node u and node v */
-        public List<Node> shortestpath(Node u, Node v) { throw new NotImplementedException(); }
+        public List<Node> shortestpath(Node u, Node v)
+        {
+            if (u.id == v.id)
+                return new List<Node>() { u };
+            List<string> closedSet = new List<string>();
+            Queue<Tuple<Node, List<Node>>> paths = new Queue<Tuple<Node, List<Node>>>();
+            closedSet.Add(u.id);
+            foreach (Node n in u.neighbors)
+            {
+                if (!closedSet.Contains(n.id))
+                {
+                    paths.Enqueue(new Tuple<Node, List<Node>>(n, new List<Node>() { u }));
+                    closedSet.Add(n.id);
+                }
+            }
+            while(paths.Count != 0)
+            {
+                Tuple<Node, List<Node>> next = paths.Dequeue();
+                next.Item2.Add(next.Item1);
+                if (next.Item1.id == v.id)
+                    return next.Item2;
+                foreach (Node n in next.Item1.neighbors)
+                {
+                    if (!closedSet.Contains(n.id))
+                    {
+                        paths.Enqueue(new Tuple<Node, List<Node>>(n, next.Item2));
+                        closedSet.Add(n.id);
+                    }
+                }
+            }
+            return new List<Node>();
+        }
 
 
         /* To disconnect a bridge from the rest of the zone the bridge is in. */
@@ -91,7 +122,7 @@ namespace STVRogue.GameLogic
         List<Node> fromNodes = new List<Node>();
         public List<Node> toNodes = new List<Node>();
         public Bridge(String id) : base(id) { }
-        public bool isBridge = true;
+        new public bool isBridge = true;
 
         /* Use this to connect the bridge to a node from the same zone. */
         public void connectToNodeOfSameZone(Node nd)
