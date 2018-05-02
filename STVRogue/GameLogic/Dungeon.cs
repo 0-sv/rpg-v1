@@ -85,7 +85,7 @@ namespace STVRogue.GameLogic
         }
         public bool isBridge()
         {
-            return GetType() == (new Bridge("").GetType()) ;
+            return false;
         }
     }
 
@@ -109,6 +109,9 @@ namespace STVRogue.GameLogic
             toNodes.Add(nd);
         }
 
-        
+        new public bool isBridge()
+        {
+            return true;
+        }
     }
 }
