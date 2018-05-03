@@ -15,12 +15,30 @@ namespace STVRogue.GameLogic
         /* a constant multiplier that determines the maximum number of monster-packs per node: */
         public uint M;
         /* To create a new dungeon with the specified difficult level and capacity multiplier */
-        public Dungeon(uint level, uint nodeCapacityMultiplier)
-        {
+        public Dungeon(uint level, uint nodeCapacityMultiplier) {
             Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
+
+            initializeNodeListForDungeonCreation(level);
+
             difficultyLevel = level;
             M = nodeCapacityMultiplier;
-            throw new NotImplementedException();
+
+        }
+
+        private static void initializeNodeListForDungeonCreation(uint level) {
+            List<Node> allNodes = new List<Node>();
+            for (int index = 0; index < level * 6; ++index) {
+                int indexIsBridge = index % 4;
+                string bridgeId = indexIsBridge.ToString();
+                if (indexIsBridge == 0) {
+                    Bridge b = new Bridge(bridgeId);
+                    allNodes.Add(b);
+                }
+                else {
+                    Node n = new Node();
+                    allNodes.Add(n);
+                }
+            }
         }
 
         /* Return a shortest path between node u and node v */
