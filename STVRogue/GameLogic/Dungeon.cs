@@ -14,32 +14,49 @@ namespace STVRogue.GameLogic
         public uint difficultyLevel;
         /* a constant multiplier that determines the maximum number of monster-packs per node: */
         public uint M;
+		Random randomnum = new Random();
         /* To create a new dungeon with the specified difficult level and capacity multiplier */
         public Dungeon(uint level, uint nodeCapacityMultiplier) {
             Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
-
-            difficultyLevel = level;
+			// index van alle bridges
+			int[] bridges = new int[level];
+			difficultyLevel = level;
             M = nodeCapacityMultiplier;
 
-            List<Node> nodeList = InitializeNodeList(difficultyLevel, nodeCapacityMultiplier);
+            List<Node> nodeList = InitializeNodeList(difficultyLevel, nodeCapacityMultiplier, bridges);
+			int remainingnodes = 0;
+			int bridgeloc = 0;
 
-            // TO DO: Fill nodeList with neighbours. 
-
-
-
-
-            // END TO DO
+			for (int i = 0; i < nodeList.Count; i++)
+			{
+				if( i == bridges[bridgeloc+1])
+				{
+					bridgeloc++;
+					remainingnodes = 0;
+				}
+				for (int j = bridges[bridgeloc] + remainingnodes; j < bridges[bridgeloc+1]; j++)
+				{	// 50% chance to connect two nodes on a level
+					if (randomnum.Next(1, 3) == 2)
+					{
+						nodeList[i].neighbors.Add(nodeList[j]);
+						nodeList[j].neighbors.Add(nodeList[i]);
+					}
+				}
+				remainingnodes++;
+			}
         }
 
-        private static List<Node> InitializeNodeList(uint level, uint nodeCapacityMultiplier) {
+        private static List<Node> InitializeNodeList(uint level, uint nodeCapacityMultiplier, int[] bridges) {
             List<Node> nodeList = new List<Node>();
             uint maxNodes = level * nodeCapacityMultiplier;
             int bridge_id = 0;
-
+			int c = 1;
             for (int index = 0; index < maxNodes; ++index) {
                 if (index % nodeCapacityMultiplier == 0) {
                     Bridge b = new Bridge(bridge_id++.ToString());
                     nodeList.Add(b);
+					bridges[c] = index;
+					c++;
                 }
                 else {
                     Node n = new Node();
