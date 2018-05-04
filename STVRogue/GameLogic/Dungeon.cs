@@ -18,8 +18,8 @@ namespace STVRogue.GameLogic
         /* To create a new dungeon with the specified difficult level and capacity multiplier */
         public Dungeon(uint level, uint nodeCapacityMultiplier) {
             Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
-			// index van alle bridges
-			int[] bridges = new int[level];
+			// array met indices van alle bridges
+			int[] bridges = new int[level-1];
 			difficultyLevel = level;
             M = nodeCapacityMultiplier;
 
@@ -34,12 +34,15 @@ namespace STVRogue.GameLogic
 					bridgeloc++;
 					remainingnodes = 0;
 				}
-				for (int j = bridges[bridgeloc] + remainingnodes; j < bridges[bridgeloc+1]; j++)
-				{	// 50% chance to connect two nodes on a level
-					if (randomnum.Next(1, 3) == 2)
-					{
-						nodeList[i].neighbors.Add(nodeList[j]);
-						nodeList[j].neighbors.Add(nodeList[i]);
+				for (int j = bridges[bridgeloc] + remainingnodes; j <= bridges[bridgeloc+1]; j++)
+				{  
+					if (i != j)
+					{ // 50% chance to connect two nodes on a level
+						if (randomnum.Next(1, 3) == 2)
+						{
+							nodeList[i].neighbors.Add(nodeList[j]);
+							nodeList[j].neighbors.Add(nodeList[i]);
+						}
 					}
 				}
 				remainingnodes++;
@@ -48,22 +51,35 @@ namespace STVRogue.GameLogic
 
         private static List<Node> InitializeNodeList(uint level, uint nodeCapacityMultiplier, int[] bridges) {
             List<Node> nodeList = new List<Node>();
-            uint maxNodes = level * nodeCapacityMultiplier;
+			Random rnd = new Random();
+			int nodesonthislevel = rnd.Next(2, 6);
             int bridge_id = 0;
-			int c = 1;
-            for (int index = 0; index < maxNodes; ++index) {
-                if (index % nodeCapacityMultiplier == 0) {
-                    Bridge b = new Bridge(bridge_id++.ToString());
-                    nodeList.Add(b);
-					bridges[c] = index;
-					c++;
-                }
-                else {
-                    Node n = new Node();
-                    nodeList.Add(n);
-                }
-            }
-            return nodeList;
+			for(int i = 1; i<level;i++)
+			{ // between 2 and 5 nodes on each level excluding the bridges
+				nodesonthislevel = rnd.Next(2, 6);
+				for (int j = 0; j<nodesonthislevel;j++)
+				{
+					Node n = new Node();
+					nodeList.Add(n);
+				}
+				// add a bridge after each level
+				Bridge b = new Bridge(bridge_id++.ToString());
+				nodeList.Add(b);
+				bridges[i] = bridges[i - 1] + nodesonthislevel + 1;
+
+			}
+			// some more nodes
+			if (level > 0)
+			{
+				nodesonthislevel = rnd.Next(2, 6);
+				for (int j = 0; j < nodesonthislevel; j++)
+				{
+					Node n = new Node();
+					nodeList.Add(n);
+				}
+			}
+				return nodeList;
+			
         }
 
         /* Return a shortest path between node u and node v */
