@@ -23,7 +23,7 @@ namespace STVRogue.GameLogic
 			difficultyLevel = level;
             M = nodeCapacityMultiplier;
 
-            List<Node> nodeList = InitializeNodeList(difficultyLevel, nodeCapacityMultiplier, bridges);
+            List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
 			int remainingnodes = 0;
 			int bridgeloc = 0;
 
@@ -49,7 +49,7 @@ namespace STVRogue.GameLogic
 			}
         }
 
-        private static List<Node> InitializeNodeList(uint level, uint nodeCapacityMultiplier, int[] bridges) {
+        private static List<Node> InitializeNodeList(uint level, int[] bridges) {
             List<Node> nodeList = new List<Node>();
 			Random rnd = new Random();
 			int nodesonthislevel = rnd.Next(2, 6);
