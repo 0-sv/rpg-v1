@@ -19,15 +19,16 @@ namespace STVRogue.GameLogic
         public Dungeon(uint level, uint nodeCapacityMultiplier) {
             Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
 			// array met indices van alle bridges
-			int[] bridges = new int[level-1];
+			int[] bridges = new int[level + 1];
 			difficultyLevel = level;
             M = nodeCapacityMultiplier;
-
             List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
+			bridges[level] = nodeList.Count()-1;
 			int remainingnodes = 0;
+			// amount of bridges passed
 			int bridgeloc = 0;
 
-			for (int i = 0; i < nodeList.Count; i++)
+			for (int i = 0; i < nodeList.Count-1; i++)
 			{
 				if( i == bridges[bridgeloc+1])
 				{
