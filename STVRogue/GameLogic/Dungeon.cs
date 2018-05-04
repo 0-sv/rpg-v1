@@ -18,27 +18,34 @@ namespace STVRogue.GameLogic
         public Dungeon(uint level, uint nodeCapacityMultiplier) {
             Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
 
-            initializeNodeListForDungeonCreation(level);
+            List<Node> allNodes = InitializeNodeListForDungeonCreation(level);
 
             difficultyLevel = level;
             M = nodeCapacityMultiplier;
 
+            // TO DO: Fill nodeList with neighbours. 
+
+
+
+
+            // END TO DO
         }
 
-        private static void initializeNodeListForDungeonCreation(uint level) {
-            List<Node> allNodes = new List<Node>();
+        private static List<Node> InitializeNodeListForDungeonCreation(uint level) {
+            List<Node> nodeList = new List<Node>();
             for (int index = 0; index < level * 6; ++index) {
                 int indexIsBridge = index % 4;
                 string bridgeId = indexIsBridge.ToString();
                 if (indexIsBridge == 0) {
                     Bridge b = new Bridge(bridgeId);
-                    allNodes.Add(b);
+                    nodeList.Add(b);
                 }
                 else {
                     Node n = new Node();
-                    allNodes.Add(n);
+                    nodeList.Add(n);
                 }
             }
+            return nodeList;
         }
 
         /* Return a shortest path between node u and node v */
