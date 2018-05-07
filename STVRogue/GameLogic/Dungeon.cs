@@ -91,7 +91,7 @@ namespace STVRogue.GameLogic
 		}
 
 		/* Return a shortest path between node u and node v */
-		public List<Node> shortestpath(Node u, Node v)
+		public List<Node> Shortestpath(Node u, Node v)
 		{
 			if (u.id == v.id)
 				return new List<Node>() { u };
@@ -121,22 +121,22 @@ namespace STVRogue.GameLogic
 		}
 
 		/* To disconnect a bridge from the rest of the zone the bridge is in. */
-		public void disconnect(Bridge b)
+		public void Disconnect(Bridge b)
 		{
 			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
 			foreach (Node n in b.toNodes)
-				n.disconnect(b);
+				n.Disconnect(b);
 			startNode = b;
 		}
 
 		/* To calculate the level of the given node. */
-		public uint level(Node d)
+		public uint Level(Node d)
 		{
-			List<Node> pathToNode_d = shortestpath(startNode, d);
+			List<Node> pathToNode_d = Shortestpath(startNode, d);
 			uint level = 0;
 
 			for (int index = 0; index < pathToNode_d.Count(); index++)
-				if (pathToNode_d[index].isBridge())
+				if (pathToNode_d[index].IsBridge())
 					level++;
 			return level;
 		}
@@ -153,18 +153,18 @@ namespace STVRogue.GameLogic
 		public Node(String id) { this.id = id; }
 
 		/* To connect this node to another node. */
-		public void connect(Node nd)
+		public void Connect(Node nd)
 		{
 			neighbors.Add(nd); nd.neighbors.Add(this);
 		}
 
 		/* To disconnect this node from the given node. */
-		public void disconnect(Node nd)
+		public void Disconnect(Node nd)
 		{
 			neighbors.Remove(nd); nd.neighbors.Remove(this);
 		}
 
-        public bool isBridge () {
+        public bool IsBridge () {
             return false;
         }
 
@@ -176,16 +176,9 @@ namespace STVRogue.GameLogic
 		public void fight(Player player)
 		{
             while (!this.packs.Any() || player.HP == 0) {
-                WritePossibleActionsToScreen();
-                string action = Console.ReadLine();
+                Command c = new Command(this, player);
+                c.executeCommand();
             }
-        }
-
-        private static void WritePossibleActionsToScreen() {
-            Console.WriteLine("Perform an action by typing: ");
-            Console.WriteLine("1. attack");
-            Console.WriteLine("2. item");
-            Console.WriteLine("3. flee");
         }
     }
 
@@ -198,14 +191,14 @@ namespace STVRogue.GameLogic
 		/* Use this to connect the bridge to a node from the same zone. */
 		public void connectToNodeOfSameZone(Node nd)
 		{
-			base.connect(nd);
+			base.Connect(nd);
 			fromNodes.Add(nd);
 		}
 
 		/* Use this to connect the bridge to a node from the next zone. */
 		public void connectToNodeOfNextZone(Node nd)
 		{
-			base.connect(nd);
+			base.Connect(nd);
 			toNodes.Add(nd);
 		}
 	}

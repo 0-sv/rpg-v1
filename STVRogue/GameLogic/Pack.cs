@@ -39,7 +39,7 @@ namespace STVRogue.GameLogic
         public void move(Node u)
         {
             if (!location.neighbors.Contains(u)) throw new ArgumentException();
-            int capacity = (int) (dungeon.M * (dungeon.level(u) + 1));
+            int capacity = (int) (dungeon.M * (dungeon.Level(u) + 1));
             // count monsters already in the node:
             foreach (Pack Q in location.packs) {
                 capacity = capacity - Q.members.Count;
@@ -59,7 +59,7 @@ namespace STVRogue.GameLogic
         /* Move the pack one node further along a shortest path to u. */
         public void moveTowards(Node u)
         {
-            List<Node> path = dungeon.shortestpath(location, u);
+            List<Node> path = dungeon.Shortestpath(location, u);
             move(path[0]);
         }
     }

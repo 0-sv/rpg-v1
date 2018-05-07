@@ -14,7 +14,7 @@ namespace STVRogue.GameLogic
         public Item() { }
         public Item(String id) { this.id = id; }
 
-        virtual public void use(Player player)
+        virtual public void Use(Player player)
         {
             if (used)
             {
@@ -26,31 +26,36 @@ namespace STVRogue.GameLogic
             Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
             used = true;
         }
-        public bool isHealingPotion () {
+        public bool IsHealingPotion () {
             return false;
         }
-        public bool isCrystal () {
+        public bool IsCrystal () {
             return false;
         }
     }
 
     public class HealingPotion : Item
     {
-        public uint HPvalue;
+        public int HPvalue;
 
         /* Create a healing potion with random HP-value */
         public HealingPotion(String id)
-            : base(id)
-        {
-            HPvalue = (uint)RandomGenerator.rnd.Next(10) + 1;
+            : base(id) {
+            HPvalue = (int)RandomGenerator.rnd.Next(10) + 1;
         }
 
-        override public void use(Player player)
+        override public void Use(Player player)
         {
-            base.use(player);
-            player.HP = (int)Math.Min(player.HPbase, player.HP + HPvalue);
+            base.Use(player);
+            if (player.HP == player.GetHPMax())
+                return;
+            else if (player.HP + HPvalue > player.GetHPMax())
+                player.HP = player.GetHPMax();
+            else
+                player.HP = (int)Math.Min(player.HPbase, player.HP + HPvalue);
         }
-        new public bool isHealingPotion () {
+
+        new public bool IsHealingPotion () {
             return true;
         }
     }
@@ -58,13 +63,13 @@ namespace STVRogue.GameLogic
     public class Crystal : Item
     {
         public Crystal(String id) : base(id) { }
-        override public void use(Player player)
+        override public void Use(Player player)
         {
-            base.use(player);
+            base.Use(player);
             player.accelerated = true;
-            if (player.location is Bridge) player.dungeon.disconnect(player.location as Bridge);
+            if (player.location is Bridge) player.dungeon.Disconnect(player.location as Bridge);
         }
-        new public bool isCrystal () {
+        new public bool IsCrystal () {
             return true;
         }
     }

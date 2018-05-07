@@ -39,6 +39,10 @@ namespace STVRogue
         private void UseItem() {
             WritePossibleItemUsage();
             string item = Console.ReadLine();
+            SelectItem(item);
+        }
+
+        private void SelectItem(string item) {
             if (item == "hp potion")
                 useHPPotion();
             else if (item == "crystal")
@@ -46,12 +50,11 @@ namespace STVRogue
         }
 
         private void useCrystal() {
-            foreach (Item i in player.bag) {
+            foreach (Item i in player.bag) 
                 if (i.isCrystal()) {
                     player.use(i);
                     return;
                 }
-            }
         }
 
         private void useHPPotion() {
