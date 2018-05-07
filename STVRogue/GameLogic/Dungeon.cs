@@ -64,11 +64,11 @@ namespace STVRogue.GameLogic
 			Random rnd = new Random();
 			int nodesonthislevel = rnd.Next(2, 6);
 			int node_id = 0;
+
 			for (int i = 1; i < level; i++)
 			{ // between 2 and 4 nodes on each level excluding the bridges
 				nodesonthislevel = rnd.Next(2, 5);
-				for (int j = 0; j < nodesonthislevel; j++)
-				{
+				for (int j = 0; j < nodesonthislevel; j++) {
 					Node n = new Node(node_id++.ToString());
 					nodeList.Add(n);
 				}
@@ -76,11 +76,10 @@ namespace STVRogue.GameLogic
 				Bridge b = new Bridge(node_id++.ToString());
 				nodeList.Add(b);
 				bridges[i] = bridges[i - 1] + nodesonthislevel + 1;
-
 			}
+
 			// some more nodes
-			if (level > 0)
-			{
+			if (level > 0) {
 				nodesonthislevel = rnd.Next(2, 6);
 				for (int j = 0; j < nodesonthislevel; j++)
 				{
@@ -100,27 +99,23 @@ namespace STVRogue.GameLogic
 			Queue<Tuple<Node, List<Node>>> paths = new Queue<Tuple<Node, List<Node>>>();
 			closedSet.Add(u.id);
 			foreach (Node n in u.neighbors)
-			{
-				if (!closedSet.Contains(n.id))
-				{
+				if (!closedSet.Contains(n.id)) {
 					paths.Enqueue(new Tuple<Node, List<Node>>(n, new List<Node>() { u }));
 					closedSet.Add(n.id);
 				}
-			}
+
 			while (paths.Count != 0)
 			{
 				Tuple<Node, List<Node>> next = paths.Dequeue();
 				next.Item2.Add(next.Item1);
-				if (next.Item1.id == v.id)
-					return next.Item2;
-				foreach (Node n in next.Item1.neighbors)
-				{
-					if (!closedSet.Contains(n.id))
-					{
+				if (next.Item1.id == v.id) 
+                    return next.Item2;
+
+                foreach (Node n in next.Item1.neighbors)
+					if (!closedSet.Contains(n.id)) {
 						paths.Enqueue(new Tuple<Node, List<Node>>(n, next.Item2));
 						closedSet.Add(n.id);
 					}
-				}
 			}
 			return new List<Node>();
 		}
@@ -130,9 +125,7 @@ namespace STVRogue.GameLogic
 		{
 			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
 			foreach (Node n in b.toNodes)
-			{
 				n.disconnect(b);
-			}
 			startNode = b;
 		}
 
@@ -143,12 +136,8 @@ namespace STVRogue.GameLogic
 			uint level = 0;
 
 			for (int index = 0; index < pathToNode_d.Count(); index++)
-			{
 				if (pathToNode_d[index].isBridge())
-				{
 					level++;
-				}
-			}
 			return level;
 		}
 	}
@@ -189,7 +178,6 @@ namespace STVRogue.GameLogic
             while (!this.packs.Any() || player.HP == 0) {
                 WritePossibleActionsToScreen();
                 string action = Console.ReadLine();
-                PerformActionWithTypedCommand(player, action);
             }
         }
 
@@ -198,51 +186,6 @@ namespace STVRogue.GameLogic
             Console.WriteLine("1. attack");
             Console.WriteLine("2. item");
             Console.WriteLine("3. flee");
-        }
-
-        private void PerformActionWithTypedCommand(Player player, string action) {
-            if (action == "attack") {
-                foreach (Pack p in packs)
-                    foreach (Monster m in p.members) {
-                        player.Attack(m);
-                    }
-            }
-            else if (action == "item") {
-                WritePossibleItemUsage();
-                string item = Console.ReadLine();
-                if (item == "hp potion") {
-                    foreach (Item i in player.bag) {
-                        if (i.isHealingPotion()) {
-                            player.use(i);
-                            return;
-                        }
-                    }
-                }
-                else if (item == "crystal") {
-                    foreach (Item i in player.bag) {
-                        if (i.isCrystal()) {
-                            player.use(i);
-                            return;
-                        }
-                    }
-                }
-            }
-            else if (action == "flee") {
-                foreach (Node n in neighbors) {
-                    if (!n.packs.Any())
-                        player.location = n;
-                }
-                player.location = neighbors[0];
-            }
-            else {
-                Console.WriteLine("Action not recognized.");
-            }
-        }
-
-        private static void WritePossibleItemUsage() {
-            Console.WriteLine("Use an item by writing: ");
-            Console.WriteLine("a. hp potion");
-            Console.WriteLine("b. magic crystal");
         }
     }
 
