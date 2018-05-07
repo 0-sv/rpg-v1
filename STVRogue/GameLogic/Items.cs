@@ -26,6 +26,12 @@ namespace STVRogue.GameLogic
             Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
             used = true;
         }
+        public bool isHealingPotion () {
+            return false;
+        }
+        public bool isCrystal () {
+            return false;
+        }
     }
 
     public class HealingPotion : Item
@@ -44,6 +50,9 @@ namespace STVRogue.GameLogic
             base.use(player);
             player.HP = (int)Math.Min(player.HPbase, player.HP + HPvalue);
         }
+        new public bool isHealingPotion () {
+            return true;
+        }
     }
 
     public class Crystal : Item
@@ -54,6 +63,9 @@ namespace STVRogue.GameLogic
             base.use(player);
             player.accelerated = true;
             if (player.location is Bridge) player.dungeon.disconnect(player.location as Bridge);
+        }
+        new public bool isCrystal () {
+            return true;
         }
     }
 }

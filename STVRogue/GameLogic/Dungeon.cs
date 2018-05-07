@@ -16,51 +16,49 @@ namespace STVRogue.GameLogic
 		public uint M;
 		Random randomnum = new Random();
 		/* To create a new dungeon with the specified difficult level and capacity multiplier */
-		public Dungeon(uint level, uint nodeCapacityMultiplier)
-		{
-			Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
-			// array met indices van alle bridges
-			int[] bridges = new int[level + 1];
-			difficultyLevel = level;
-			M = nodeCapacityMultiplier;
-			List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
-			bridges[level] = nodeList.Count() - 1;
-			// amount of bridges passed
-			int bridgeloc = 0;
+		public Dungeon(uint level, uint nodeCapacityMultiplier) {
+            Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
 
-			for (int i = 0; i < nodeList.Count - 1; i++)
-			{
-				if (i == bridges[bridgeloc + 1])
-				{
-					bridgeloc++;
-				}
-				for (int j = i+1; j <= bridges[bridgeloc + 1]; j++)
-				{
-					// connect nodes
-					if (randomnum.Next(1, 4) > nodeList[i].neighbors.Count())
-					{ 
-							nodeList[i].neighbors.Add(nodeList[j]);
-							nodeList[j].neighbors.Add(nodeList[i]);
-					}
-				}
-			}
-			if(nodeList[nodeList.Count()-1].neighbors.Count() == 0)
-			{
-				nodeList[nodeList.Count() - 1].neighbors.Add(nodeList[nodeList.Count() - 2]);
-				nodeList[nodeList.Count() - 2].neighbors.Add(nodeList[nodeList.Count() - 1]);
-			}
-			for (int i = 0; i < nodeList.Count(); i++)
-			{
-				Console.WriteLine("node" + nodeList[i].id);
-				for (int j = 0; j < nodeList[i].neighbors.Count(); j++)
-				{
-					Console.WriteLine("neighbor" + nodeList[i].neighbors[j].id);
-				}
-			}
+            difficultyLevel = level;
+            M = nodeCapacityMultiplier;
+            List<Node> nodeList = PopulateNodeList(level);
 
-		}
+        }
 
-		private static List<Node> InitializeNodeList(uint level, int[] bridges)
+        private List<Node> PopulateNodeList(uint level) {
+            // array met indices van alle bridges
+            int[] bridges = new int[level + 1];
+            List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
+            bridges[level] = nodeList.Count() - 1;
+            // amount of bridges passed
+            int bridgeloc = 0;
+
+            for (int i = 0; i < nodeList.Count - 1; i++) {
+                if (i == bridges[bridgeloc + 1]) {
+                    bridgeloc++;
+                }
+                for (int j = i + 1; j <= bridges[bridgeloc + 1]; j++) {
+                    // connect nodes
+                    if (randomnum.Next(1, 4) > nodeList[i].neighbors.Count()) {
+                        nodeList[i].neighbors.Add(nodeList[j]);
+                        nodeList[j].neighbors.Add(nodeList[i]);
+                    }
+                }
+            }
+            if (nodeList[nodeList.Count() - 1].neighbors.Count() == 0) {
+                nodeList[nodeList.Count() - 1].neighbors.Add(nodeList[nodeList.Count() - 2]);
+                nodeList[nodeList.Count() - 2].neighbors.Add(nodeList[nodeList.Count() - 1]);
+            }
+            for (int i = 0; i < nodeList.Count(); i++) {
+                Console.WriteLine("node" + nodeList[i].id);
+                for (int j = 0; j < nodeList[i].neighbors.Count(); j++) {
+                    Console.WriteLine("neighbor" + nodeList[i].neighbors[j].id);
+                }
+            }
+            return nodeList;
+        }
+
+        private static List<Node> InitializeNodeList(uint level, int[] bridges)
 		{
 			List<Node> nodeList = new List<Node>();
 			Random rnd = new Random();
@@ -91,7 +89,6 @@ namespace STVRogue.GameLogic
 				}
 			}
 			return nodeList;
-
 		}
 
 		/* Return a shortest path between node u and node v */
@@ -148,7 +145,7 @@ namespace STVRogue.GameLogic
 
 			for (int index = 0; index < pathToNode_d.Count(); index++)
 			{
-				if (pathToNode_d[index].isBridge)
+				if (pathToNode_d[index].isBridge())
 				{
 					level++;
 				}
@@ -163,7 +160,6 @@ namespace STVRogue.GameLogic
 		public List<Node> neighbors = new List<Node>();
 		public List<Pack> packs = new List<Pack>();
 		public List<Item> items = new List<Item>();
-		public bool isBridge = false;
 
 		public Node() { }
 		public Node(String id) { this.id = id; }
@@ -180,6 +176,10 @@ namespace STVRogue.GameLogic
 			neighbors.Remove(nd); nd.neighbors.Remove(this);
 		}
 
+        public bool isBridge () {
+            return false;
+        }
+
 		/* Execute a fight between the player and the packs in this node.
          * Such a fight can take multiple rounds as describe in the Project Document.
          * A fight terminates when either the node has no more monster-pack, or when
@@ -187,16 +187,71 @@ namespace STVRogue.GameLogic
          */
 		public void fight(Player player)
 		{
-			throw new NotImplementedException();
-		}
-	}
+            while (!this.packs.Any() || player.HP == 0) {
+                WritePossibleActionsToScreen();
+                string action = Console.ReadLine();
+                PerformActionWithTypedCommand(player, action);
+            }
+        }
+
+        private static void WritePossibleActionsToScreen() {
+            Console.WriteLine("Perform an action by typing: ");
+            Console.WriteLine("1. attack");
+            Console.WriteLine("2. item");
+            Console.WriteLine("3. flee");
+        }
+
+        private void PerformActionWithTypedCommand(Player player, string action) {
+            if (action == "attack") {
+                foreach (Pack p in packs)
+                    foreach (Monster m in p.members) {
+                        player.Attack(m);
+                    }
+            }
+            else if (action == "item") {
+                WritePossibleItemUsage();
+                string item = Console.ReadLine();
+                if (item == "hp potion") {
+                    foreach (Item i in player.bag) {
+                        if (i.isHealingPotion()) {
+                            player.use(i);
+                            return;
+                        }
+                    }
+                }
+                else if (item == "crystal") {
+                    foreach (Item i in player.bag) {
+                        if (i.isCrystal()) {
+                            player.use(i);
+                            return;
+                        }
+                    }
+                }
+            }
+            else if (action == "flee") {
+                foreach (Node n in neighbors) {
+                    if (!n.packs.Any())
+                        player.location = n;
+                }
+                player.location = neighbors[0];
+            }
+            else {
+                Console.WriteLine("Action not recognized.");
+            }
+        }
+
+        private static void WritePossibleItemUsage() {
+            Console.WriteLine("Use an item by writing: ");
+            Console.WriteLine("a. hp potion");
+            Console.WriteLine("b. magic crystal");
+        }
+    }
 
 	public class Bridge : Node
 	{
 		List<Node> fromNodes = new List<Node>();
 		public List<Node> toNodes = new List<Node>();
 		public Bridge(String id) : base(id) { }
-		new public bool isBridge = true;
 
 		/* Use this to connect the bridge to a node from the same zone. */
 		public void connectToNodeOfSameZone(Node nd)
