@@ -125,7 +125,6 @@ namespace STVRogue.GameLogic
 			return new List<Node>();
 		}
 
-
 		/* To disconnect a bridge from the rest of the zone the bridge is in. */
 		public void disconnect(Bridge b)
 		{
