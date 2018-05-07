@@ -9,6 +9,7 @@ namespace STVRogue.GameLogic
 {
 	public class Dungeon
 	{
+        private Predicates p = new Predicates();
 		public Node startNode;
 		public Node exitNode;
 		public uint difficultyLevel;
@@ -91,37 +92,39 @@ namespace STVRogue.GameLogic
 		}
 
 		/* Return a shortest path between node u and node v */
-		public List<Node> Shortestpath(Node u, Node v)
-		{
-			if (u.id == v.id)
-				return new List<Node>() { u };
-			List<string> closedSet = new List<string>();
-			Queue<Tuple<Node, List<Node>>> paths = new Queue<Tuple<Node, List<Node>>>();
-			closedSet.Add(u.id);
-			foreach (Node n in u.neighbors)
-				if (!closedSet.Contains(n.id)) {
-					paths.Enqueue(new Tuple<Node, List<Node>>(n, new List<Node>() { u }));
-					closedSet.Add(n.id);
-				}
+		public List<Node> Shortestpath(Node u, Node v) {
+            if (!p.isReachable(u, v))
+                return new List<Node>() { u };
+            return ShortestpathAlgorithm(u, v);
+        }
 
-			while (paths.Count != 0)
-			{
-				Tuple<Node, List<Node>> next = paths.Dequeue();
-				next.Item2.Add(next.Item1);
-				if (next.Item1.id == v.id) 
+        private static List<Node> ShortestpathAlgorithm(Node u, Node v) {
+            List<string> closedSet = new List<string>();
+            Queue<Tuple<Node, List<Node>>> paths = new Queue<Tuple<Node, List<Node>>>();
+            closedSet.Add(u.id);
+            foreach (Node n in u.neighbors)
+                if (!closedSet.Contains(n.id)) {
+                    paths.Enqueue(new Tuple<Node, List<Node>>(n, new List<Node>() { u }));
+                    closedSet.Add(n.id);
+                }
+
+            while (paths.Count != 0) {
+                Tuple<Node, List<Node>> next = paths.Dequeue();
+                next.Item2.Add(next.Item1);
+                if (next.Item1.id == v.id)
                     return next.Item2;
 
                 foreach (Node n in next.Item1.neighbors)
-					if (!closedSet.Contains(n.id)) {
-						paths.Enqueue(new Tuple<Node, List<Node>>(n, next.Item2));
-						closedSet.Add(n.id);
-					}
-			}
-			return new List<Node>();
-		}
+                    if (!closedSet.Contains(n.id)) {
+                        paths.Enqueue(new Tuple<Node, List<Node>>(n, next.Item2));
+                        closedSet.Add(n.id);
+                    }
+            }
+            return new List<Node>();
+        }
 
-		/* To disconnect a bridge from the rest of the zone the bridge is in. */
-		public void Disconnect(Bridge b)
+        /* To disconnect a bridge from the rest of the zone the bridge is in. */
+        public void Disconnect(Bridge b)
 		{
 			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
 			foreach (Node n in b.toNodes)
@@ -132,13 +135,7 @@ namespace STVRogue.GameLogic
 		/* To calculate the level of the given node. */
 		public uint Level(Node d)
 		{
-			List<Node> pathToNode_d = Shortestpath(startNode, d);
-			uint level = 0;
-
-			for (int index = 0; index < pathToNode_d.Count(); index++)
-				if (pathToNode_d[index].IsBridge())
-					level++;
-			return level;
+			return p.countNumberOfBridges(startNode, exitNode);
 		}
 	}
 
@@ -164,20 +161,16 @@ namespace STVRogue.GameLogic
 			neighbors.Remove(nd); nd.neighbors.Remove(this);
 		}
 
-        public bool IsBridge () {
-            return false;
-        }
-
 		/* Execute a fight between the player and the packs in this node.
          * Such a fight can take multiple rounds as describe in the Project Document.
          * A fight terminates when either the node has no more monster-pack, or when
          * the player's HP is reduced to 0. 
          */
-		public void fight(Player player)
+		public void Combat(Player player)
 		{
-            while (!this.packs.Any() || player.HP == 0) {
+            while (this.packs.Any() || player.HP != 0) {
                 Command c = new Command(this, player);
-                c.executeCommand();
+                c.ExecuteCommand();
             }
         }
     }
@@ -189,14 +182,14 @@ namespace STVRogue.GameLogic
 		public Bridge(String id) : base(id) { }
 
 		/* Use this to connect the bridge to a node from the same zone. */
-		public void connectToNodeOfSameZone(Node nd)
+		public void ConnectToNodeOfSameZone(Node nd)
 		{
 			base.Connect(nd);
 			fromNodes.Add(nd);
 		}
 
 		/* Use this to connect the bridge to a node from the next zone. */
-		public void connectToNodeOfNextZone(Node nd)
+		public void ConnectToNodeOfNextZone(Node nd)
 		{
 			base.Connect(nd);
 			toNodes.Add(nd);

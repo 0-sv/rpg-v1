@@ -16,7 +16,7 @@ namespace STVRogue
             this.node = node;
         }
 
-        public void executeCommand() {
+        public void ExecuteCommand() {
             if (action == "attack")
                 Attack();
             else if (action == "item")
@@ -44,23 +44,23 @@ namespace STVRogue
 
         private void SelectItem(string item) {
             if (item == "hp potion")
-                useHPPotion();
+                UseHPPotion();
             else if (item == "crystal")
-                useCrystal();
+                UseCrystal();
         }
 
-        private void useCrystal() {
+        private void UseCrystal() {
             foreach (Item i in player.bag) 
-                if (i.isCrystal()) {
-                    player.use(i);
+                if (i.IsCrystal()) {
+                    player.Use(i);
                     return;
                 }
         }
 
-        private void useHPPotion() {
+        private void UseHPPotion() {
             foreach (Item i in player.bag) {
-                if (i.isHealingPotion()) {
-                    player.use(i);
+                if (i.IsHealingPotion()) {
+                    player.Use(i);
                     return;
                 }
             }

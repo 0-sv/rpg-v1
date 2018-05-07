@@ -37,18 +37,25 @@ namespace STVRogue.GameLogic
 
     public class Player : Creature
     {
+        private int HPmax = 100; 
+
         public Dungeon dungeon;
         public int HPbase = 100;
         public Boolean accelerated = false;
         public uint KillPoint = 0;
         public List<Item> bag = new List<Item>();
+
         public Player()
         {
             id = "player";
             AttackRating = 5;
         }
 
-        public void use(Item item)
+        public int GetHPMax() {
+            return HPmax;
+        }
+
+        public void Use(Item item)
         {
             if (!bag.Contains(item) || item.used) throw new ArgumentException();
             item.use(this);

@@ -9,8 +9,9 @@ namespace STVRogue.GameLogic
 {
     public class Game
     {
-        public Player player;
-        public Dungeon dungeon;
+        private Player player;
+        private Dungeon dungeon;
+        private Predicates p;
 
         /* This creates a player and a random dungeon of the given difficulty level and node-capacity
          * The player is positioned at the dungeon's starting-node.
@@ -23,14 +24,20 @@ namespace STVRogue.GameLogic
         {
             Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
                        + nodeCapcityMultiplier + ", and " + numberOfMonsters + " monsters.");
-			dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
+            dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
+            if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel) {
+                throw new GameCreationException();
+            }
+                
+            
+			
             player = new Player();
         }
 
         /*
          * A single update turn to the game. 
          */
-        public Boolean update(Command userCommand)
+        public Boolean Update(Command userCommand)
         {
             Logger.log("Player does " + userCommand);
             return true;
@@ -40,6 +47,8 @@ namespace STVRogue.GameLogic
     public class GameCreationException : Exception
     {
         public GameCreationException() { }
-        public GameCreationException(String explanation) : base(explanation) { }
+        public GameCreationException(String explanation) : base(explanation) { 
+            explanation = "The dungeon is not a valid dungeon!";    
+        }
     }
 }
