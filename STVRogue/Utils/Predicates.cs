@@ -84,10 +84,9 @@ namespace STVRogue.Utils
         {
             if (startNode is Bridge || exitNode is Bridge) return false;
             if (countNumberOfBridges(startNode, exitNode) != level) return false;
-
-            List<Node> nodes = reachableNodes(startNode);
+			List<Node> nodes = reachableNodes(startNode);
             if (!nodes.Contains(exitNode)) return false;
-            int totalConnectivityDegree = 0;
+			int totalConnectivityDegree = 0;
             foreach (Node nd in nodes)
             {
                 foreach (Node nd2 in nd.neighbors)
@@ -95,15 +94,15 @@ namespace STVRogue.Utils
                     // check that each connection is bi-directional
                     if (!nd2.neighbors.Contains(nd)) return false;
                 }
-                // check the connectivity degree
-                if (nd.neighbors.Count > 4) return false;
-                totalConnectivityDegree += nd.neighbors.Count;
+				// check the connectivity degree
+				if (nd.neighbors.Count > 4) return false;
+				totalConnectivityDegree += nd.neighbors.Count;
                 // check bridge
                 Boolean isBridge_ = isBridge(startNode, exitNode, nd);
-                if (nd is Bridge && !isBridge_) return false;
-                if (!(nd is Bridge) && isBridge_) return false;
-            }
-            float avrgConnectivity = (float)totalConnectivityDegree / (float)nodes.Count;
+				if (nd is Bridge && !isBridge_) return false; 
+                if (!(nd is Bridge) && isBridge_)  return false;
+			}
+			float avrgConnectivity = (float)totalConnectivityDegree / (float)nodes.Count;
             if (avrgConnectivity > 3) return false;
             return true;
         }

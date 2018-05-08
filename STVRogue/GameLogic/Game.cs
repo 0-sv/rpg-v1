@@ -9,7 +9,7 @@ namespace STVRogue.GameLogic
 {
     public class Game
     {
-        private Player player;
+        public Player player;
         private Dungeon dungeon;
         private Predicates p;
 
@@ -25,9 +25,10 @@ namespace STVRogue.GameLogic
             Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
                        + nodeCapcityMultiplier + ", and " + numberOfMonsters + " monsters.");
             dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
-      //      if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
-      //          throw new GameCreationException();
-       //     }
+			p = new Predicates();
+            if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
+                throw new GameCreationException();
+            }
                 
             
 			
