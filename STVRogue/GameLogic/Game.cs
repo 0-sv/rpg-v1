@@ -100,6 +100,7 @@ namespace STVRogue.GameLogic
 
 		public List<Item> additems(int totalMonsterHP, int nodeMax, int playerHP)
 		{
+			List<Item> items = new List<Item>();
 			int HPlimit = (int)(totalMonsterHP * 0.8);
 			int itemAndPlayerHP = playerHP;
 			int item_id = -1;
@@ -110,6 +111,7 @@ namespace STVRogue.GameLogic
 				HealingPotion item = new HealingPotion(item_id++.ToString());
 				item.location = dungeon.nodeList[allNodesInRandomOrder[count++]];
 				itemAndPlayerHP += item.HPvalue;
+				items.Add(item);
 			}
 			while(count< allNodesInRandomOrder.Count-1)
 			{
@@ -117,6 +119,7 @@ namespace STVRogue.GameLogic
 				{
 					Crystal item = new Crystal(item_id++.ToString());
 					item.location = item.location = dungeon.nodeList[allNodesInRandomOrder[count]];
+					items.Add(item);
 				}
 				count++;
 			}
@@ -125,7 +128,7 @@ namespace STVRogue.GameLogic
 
 
 
-			List<Item> items = new List<Item>();
+			
 
 			return items;
 		}
