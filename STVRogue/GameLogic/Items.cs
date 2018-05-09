@@ -11,7 +11,8 @@ namespace STVRogue.GameLogic
     {
         public String id;
         public Boolean used = false;
-        public Item() { }
+		public Node location;
+		public Item() { }
         public Item(String id) { this.id = id; }
 
         virtual public void Use(Player player)

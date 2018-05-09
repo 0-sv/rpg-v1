@@ -12,6 +12,8 @@ namespace STVRogue.GameLogic
 		private Predicates p = new Predicates();
 		public Node startNode;
 		public Node exitNode;
+		public List<Node> nodeList;
+		public int[] bridges;
 		public uint difficultyLevel;
 		/* a constant multiplier that determines the maximum number of monster-packs per node: */
 		public uint M;
@@ -23,7 +25,7 @@ namespace STVRogue.GameLogic
 
 			difficultyLevel = level;
 			M = nodeCapacityMultiplier;
-			List<Node> nodeList = PopulateNodeList(level);
+			nodeList = PopulateNodeList(level);
 			startNode = nodeList[0];
 			exitNode = nodeList[nodeList.Count - 1];
 
@@ -32,7 +34,7 @@ namespace STVRogue.GameLogic
 		private List<Node> PopulateNodeList(uint level)
 		{
 			// array met indices van alle bridges
-			int[] bridges = new int[level + 2];
+			bridges = new int[level + 2];
 			List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
 			bridges[level+1] = nodeList.Count() - 1;
 			// amount of bridges passed

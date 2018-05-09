@@ -7,33 +7,128 @@ using STVRogue.Utils;
 
 namespace STVRogue.GameLogic
 {
-    public class Game
-    {
-        public Player player;
-        private Dungeon dungeon;
-        private Predicates p;
-
-        /* This creates a player and a random dungeon of the given difficulty level and node-capacity
+	public class Game
+	{
+		public Player player;
+		private List<Pack> packs;
+		private List<Item> items;
+		private Dungeon dungeon;
+		private Predicates p;
+		Random randomnum = new Random();
+		/* This creates a player and a random dungeon of the given difficulty level and node-capacity
          * The player is positioned at the dungeon's starting-node.
          * The constructor also randomly seeds monster-packs and items into the dungeon. The total
          * number of monsters are as specified. Monster-packs should be seeded as such that
          * the nodes' capacity are not violated. Furthermore the seeding of the monsters
          * and items should meet the balance requirements stated in the Project Document.
          */
-        public Game(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
-        {
-            Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
-                       + nodeCapcityMultiplier + ", and " + numberOfMonsters + " monsters.");
-            dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
-			p = new Predicates();
-            if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
-                throw new GameCreationException();
-            }
-                
-            
+		public Game(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
+		{
+			Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
+					   + nodeCapcityMultiplier + ", and " + numberOfMonsters + " monsters.");
+			dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
+			packs = addpacks(difficultyLevel, nodeCapcityMultiplier,numberOfMonsters);
+			player = new Player();
+			int totalMonsterHP = calculateTotalMonsterHP();
 			
-            player = new Player();
-        }
+			items = additems(totalMonsterHP, dungeon.bridges[dungeon.bridges.Length-1], player.HPbase);
+			p = new Predicates();
+			if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
+				throw new GameCreationException();
+			}
+
+
+
+			
+		}
+		public List<Pack> addpacks(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
+		{
+			uint maxMonstersOnThisLevel, monstersOnThisLevel = 0, monstersInDungeon = 0;
+			int pack_id = -1, count = 0, min, numbers;
+			List<int> nodesOnThisLevelInRandomOrder;
+			
+			int amountOfMonsters = 0;
+			List<Pack> packs = new List<Pack>();
+			for(uint i = 0; i<dungeon.bridges.Length-1;i++)
+			{
+				min = dungeon.bridges[i] + 1;
+				numbers = dungeon.bridges[i + 1] - min + 1;
+				nodesOnThisLevelInRandomOrder = Enumerable.Range(min, numbers).OrderBy(x => randomnum.Next()).ToList();
+				if(i < dungeon.bridges.Length - 2)
+				{
+					maxMonstersOnThisLevel = (2 * (i + 1) * numberOfMonsters) / ((difficultyLevel + 2) * (difficultyLevel + 1));
+				}
+				else
+				{
+					maxMonstersOnThisLevel = numberOfMonsters - monstersInDungeon;
+				}
+				count = 0;
+				monstersOnThisLevel = 0;
+					while (monstersOnThisLevel < maxMonstersOnThisLevel)
+					{
+
+					amountOfMonsters = (int)Math.Min(maxMonstersOnThisLevel - monstersOnThisLevel, (nodeCapcityMultiplier * (i+1)));
+									
+					monstersOnThisLevel += (uint)amountOfMonsters;
+
+					Pack pack = new Pack(pack_id++.ToString(), (uint)amountOfMonsters);
+					pack.location = dungeon.nodeList[nodesOnThisLevelInRandomOrder[count++]];
+					packs.Add(pack);
+					if(count > nodesOnThisLevelInRandomOrder.Count-1)
+					{
+						Console.WriteLine("Amount of monsters and nodeCapacityMultiplier not compatible");
+						return packs;
+					}
+					}
+				monstersInDungeon += monstersOnThisLevel;
+			}
+			return packs;
+		}
+
+		public int calculateTotalMonsterHP()
+		{
+			int totalHP = 0;
+			foreach (Pack p in packs)
+			{
+				foreach(Monster m in p.members)
+				{
+					totalHP += m.HP;
+				}
+			}
+			return totalHP;
+		}
+
+		public List<Item> additems(int totalMonsterHP, int nodeMax, int playerHP)
+		{
+			int HPlimit = (int)(totalMonsterHP * 0.8);
+			int itemAndPlayerHP = playerHP;
+			int item_id = -1;
+			int count = 0;
+			List<int> allNodesInRandomOrder = Enumerable.Range(1, nodeMax-1).OrderBy(x => randomnum.Next()).ToList();
+			while ((itemAndPlayerHP+11) < HPlimit)
+			{
+				HealingPotion item = new HealingPotion(item_id++.ToString());
+				item.location = dungeon.nodeList[allNodesInRandomOrder[count++]];
+				itemAndPlayerHP += item.HPvalue;
+			}
+			while(count< allNodesInRandomOrder.Count-1)
+			{
+				if(randomnum.Next(1,31) == 5)
+				{
+					Crystal item = new Crystal(item_id++.ToString());
+					item.location = item.location = dungeon.nodeList[allNodesInRandomOrder[count]];
+				}
+				count++;
+			}
+			
+
+
+
+
+			List<Item> items = new List<Item>();
+
+			return items;
+		}
 
         /*
          * A single update turn to the game. 
