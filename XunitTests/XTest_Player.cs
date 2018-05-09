@@ -17,7 +17,7 @@ namespace STVRogue.GameLogic
         [Fact]
         public void XTest_use_onEmptyBag()
         {
-            Assert.Throws<ArgumentException>(() => P.use(new Item()));
+            Assert.Throws<ArgumentException>(() => P.Use(new Item()));
         }
 
         [Fact]
@@ -26,8 +26,8 @@ namespace STVRogue.GameLogic
             
             Item x = new HealingPotion("pot1");
             P.bag.Add(x);
-            P.use(x);
-            Assert.False(P.bag.Contains(x));
+            P.Use(x);
+            Assert.DoesNotContain(x, P.bag);
         }
     }
 }
