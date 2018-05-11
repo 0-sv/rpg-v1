@@ -22,7 +22,7 @@ namespace STVRogue.GameLogic
 		[Fact]
 		public void checkIfTooManyMonstersThrowsException()
 		{
-			Game game = new Game(5, 2, 300);
+            Assert.Throws<GameCreationException>(() => new Game(5, 2, 300));
 		}
 	}
 }
