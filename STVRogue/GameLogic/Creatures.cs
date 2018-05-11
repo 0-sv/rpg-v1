@@ -51,9 +51,8 @@ namespace STVRogue.GameLogic
             AttackRating = 5;
         }
 
-        public int GetHPMax() {
-            return HPmax;
-        }
+        public int GetHPMax() => HPmax;
+        public int GetHP() => HPbase;
 
         public void Use(Item item)
         {
