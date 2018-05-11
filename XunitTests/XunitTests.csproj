@@ -74,13 +74,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="XTest_Creatures.cs" />
-    <Compile Include="XTest_Packs.cs" />
-    <Compile Include="XTest_Commands.cs" />
-    <Compile Include="XTest_Items.cs" />
-    <Compile Include="XTest_Dungeon.cs" />
-    <Compile Include="XTest_Game.cs" />
-    <Compile Include="XTest_Player.cs" />
+    <Compile Include="Unit Tests\XTest_Commands.cs" />
+    <Compile Include="Unit Tests\XTest_Creatures.cs" />
+    <Compile Include="Unit Tests\XTest_Dungeon.cs" />
+    <Compile Include="Unit Tests\XTest_Game.cs" />
+    <Compile Include="Unit Tests\XTest_Items.cs" />
+    <Compile Include="Unit Tests\XTest_Packs.cs" />
+    <Compile Include="Unit Tests\XTest_Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
