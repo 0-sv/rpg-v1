@@ -22,12 +22,12 @@ namespace STVRogue.GameLogic
          * the nodes' capacity are not violated. Furthermore the seeding of the monsters
          * and items should meet the balance requirements stated in the Project Document.
          */
-		public Game(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
+		public Game(uint difficultyLevel, uint nodeCapacityMultiplier, uint numberOfMonsters)
 		{
 			Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
-					   + nodeCapcityMultiplier + ", and " + numberOfMonsters + " monsters.");
-			dungeon = new Dungeon(difficultyLevel, nodeCapcityMultiplier);
-			packs = addpacks(difficultyLevel, nodeCapcityMultiplier,numberOfMonsters);
+					   + nodeCapacityMultiplier + ", and " + numberOfMonsters + " monsters.");
+			dungeon = new Dungeon(difficultyLevel, nodeCapacityMultiplier);
+			packs = addpacks(difficultyLevel, nodeCapacityMultiplier,numberOfMonsters);
 			player = new Player();
 			int totalMonsterHP = calculateTotalMonsterHP();
 			
@@ -76,8 +76,8 @@ namespace STVRogue.GameLogic
 					packs.Add(pack);
 					if(count > nodesOnThisLevelInRandomOrder.Count-1)
 					{
-						Console.WriteLine("Amount of monsters and nodeCapacityMultiplier not compatible");
-						return packs;
+						Console.WriteLine("Amount of monsters and nodeCapacityMultiplier are not compatible");
+						throw new GameCreationException();
 					}
 					}
 				monstersInDungeon += monstersOnThisLevel;

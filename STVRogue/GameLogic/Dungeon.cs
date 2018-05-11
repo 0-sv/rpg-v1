@@ -77,7 +77,7 @@ namespace STVRogue.GameLogic
 		{
 			List<Node> nodeList = new List<Node>();
 			Random rnd = new Random();
-			int nodesonthislevel = rnd.Next(2, 6);
+			int nodesonthislevel;
 			int node_id = -1;
 
 			for (int i = 1; i <= level; i++)
