@@ -48,12 +48,7 @@ namespace STVRogue.GameLogic
         override public void Use(Player player)
         {
             base.Use(player);
-            if (player.HP == player.GetHPMax())
-                return;
-            else if (player.HP + HPvalue > player.GetHPMax())
-                player.HP = player.GetHPMax();
-            else
-                player.HP = (int)Math.Min(player.HPbase, player.HP + HPvalue);
+            player.HP = Math.Min(player.HPbase, player.HP + HPvalue);
         }
 
         new public bool IsHealingPotion () {

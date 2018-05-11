@@ -15,7 +15,7 @@ namespace STVRogue.GameLogic
             Player p = new Player();
             int hp_before_hp_potion = p.GetHP();
             HealingPotion hp_potion = new HealingPotion("1");
-            
+            p.bag.Add(hp_potion);
             p.Use(hp_potion);
 
             Assert.Equal(p.GetHP(), hp_before_hp_potion);
