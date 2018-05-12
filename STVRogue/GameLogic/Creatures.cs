@@ -38,7 +38,7 @@ namespace STVRogue.GameLogic
     public class Player : Creature
     {
         public Dungeon dungeon;
-        public int HPbase = 100;
+        public int HPbase = 10;
         public Boolean accelerated = false;
         public uint KillPoint = 0;
         public List<Item> bag = new List<Item>();
@@ -52,6 +52,7 @@ namespace STVRogue.GameLogic
 
         public int GetHPMax() => HPbase;
         public int GetHP() => HP;
+
 
         public void Use(Item item)
         {

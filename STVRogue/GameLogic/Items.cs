@@ -42,7 +42,7 @@ namespace STVRogue.GameLogic
         /* Create a healing potion with random HP-value */
         public HealingPotion(String id)
             : base(id) {
-            HPvalue = (int)RandomGenerator.rnd.Next(10) + 1;
+            HPvalue = 3;
         }
 
         override public void Use(Player player)
