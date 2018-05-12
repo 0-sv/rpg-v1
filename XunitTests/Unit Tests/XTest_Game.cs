@@ -24,6 +24,15 @@ namespace STVRogue.GameLogic
 		{
             Assert.Throws<GameCreationException>(() => new Game(5, 2, 300));
 		}
+		[Fact]
+		public void checkIfMonstersSpawn()
+		{
+			Game game = new Game(10, 5, 50);
+			foreach(Pack pack in game.packs)
+			{
+				Assert.NotEmpty(pack.members);
+			}
+		}
 			
 		[Fact]
 		public void CheckIfMonsterBalancingHolds()
