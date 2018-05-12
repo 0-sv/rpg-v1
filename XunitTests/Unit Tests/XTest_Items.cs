@@ -12,13 +12,14 @@ namespace STVRogue.GameLogic
 	{
         int hp_before_hp_potion;
 
+        Player p;
         Crystal c;
         HealingPotion hp_potion;
         Item i;
         
         [Fact]
         public void IfPlayerUsesHPpotion_AndHPIsBase_ThenHpIsTheSame() {
-            Player p = new Player();
+            p = new Player();
             hp_before_hp_potion = p.GetHP();
             hp_potion = new HealingPotion("1");
 
@@ -53,7 +54,7 @@ namespace STVRogue.GameLogic
         {
             hp_potion = new HealingPotion("3");
 
-            Assert.True(hp_potion.IsHealingPotion());
+            Assert.True(hp_potion.IsHealingPotion);
         }
 
         [Fact]
@@ -61,15 +62,33 @@ namespace STVRogue.GameLogic
         {
             c = new Crystal("1");
             
-            Assert.True(c.IsCrystal());
+            Assert.True(c.IsCrystal);
         }
 
         [Fact]
         public void IfItem_IsHealingPotion_OrCrystal_ReturnFalse()
         {
-            i = new Item();
-            Assert.False(i.IsHealingPotion());
-            Assert.False(i.IsCrystal());
+            i = new Item("1");
+           
+            Assert.False(i.IsHealingPotion);
+            Assert.False(i.IsCrystal);
+        }
+
+        [Fact]
+        public void IfItemIsUsedByPlayer_UsedIsTrue() {
+            p = new Player();
+            hp_potion = new HealingPotion("4");
+
+            Assert.False(hp_potion.used);
+
+            p.bag.Add(hp_potion);
+            p.Use(hp_potion);
+
+            Assert.True(hp_potion.used);
+
+            p.Use(hp_potion);
+
+            Assert.
         }
         public static IEnumerable<object[]> HPData =>
             new List<object[]> { 

@@ -51,7 +51,7 @@ namespace STVRogue
 
         private void UseCrystal() {
             foreach (Item i in player.bag) 
-                if (i.IsCrystal()) {
+                if (i.IsCrystal) {
                     player.Use(i);
                     return;
                 }
@@ -59,7 +59,7 @@ namespace STVRogue
 
         private void UseHPPotion() {
             foreach (Item i in player.bag) {
-                if (i.IsHealingPotion()) {
+                if (i.IsHealingPotion) {
                     player.Use(i);
                     return;
                 }

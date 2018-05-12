@@ -12,32 +12,30 @@ namespace STVRogue.GameLogic
         public String id;
         public Boolean used = false;
 		public Node location;
-		public Item() { }
+        public bool IsHealingPotion => false;
+        public bool IsCrystal => false;
+        public Item() { }
         public Item(String id) { this.id = id; }
 
         virtual public void Use(Player player)
         {
-            if (used)
-            {
+            if (used) {
                 Logger.log("" + player.id + " is trying to use an expired item: "
                               + this.GetType().Name + " " + id
                               + ". Rejected.");
-                return;
             }
-            Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
-            used = true;
+            else {
+                Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
+                used = true;
+            }
         }
-        public bool IsHealingPotion () {
-            return false;
-        }
-        public bool IsCrystal () {
-            return false;
-        }
+        
     }
 
     public class HealingPotion : Item
     {
         public int HPvalue;
+        new public bool IsHealingPotion => true;
 
         /* Create a healing potion with random HP-value */
         public HealingPotion(String id)
@@ -50,23 +48,17 @@ namespace STVRogue.GameLogic
             base.Use(player);
             player.HP = Math.Min(player.HPbase, player.HP + HPvalue);
         }
-
-        new public bool IsHealingPotion () {
-            return true;
-        }
     }
 
     public class Crystal : Item
     {
+        new public bool IsCrystal => true;
         public Crystal(String id) : base(id) { }
         override public void Use(Player player)
         {
             base.Use(player);
             player.accelerated = true;
             if (player.location is Bridge) player.dungeon.Disconnect(player.location as Bridge);
-        }
-        new public bool IsCrystal () {
-            return true;
         }
     }
 }
