@@ -10,9 +10,10 @@ namespace STVRogue.GameLogic
 	public class Game
 	{
 		public Player player;
-		private List<Pack> packs;
-		private List<Item> items;
-		private Dungeon dungeon;
+		public List<Pack> packs;
+		public List<Item> items;
+		public Dungeon dungeon;
+		public uint[] amountOfMonstersPerLevel;
 		private Predicates p;
 		Random randomnum = new Random();
 		/* This creates a player and a random dungeon of the given difficulty level and node-capacity
@@ -27,6 +28,7 @@ namespace STVRogue.GameLogic
 			Logger.log("Creating a game of difficulty level " + difficultyLevel + ", node capacity multiplier "
 					   + nodeCapacityMultiplier + ", and " + numberOfMonsters + " monsters.");
 			dungeon = new Dungeon(difficultyLevel, nodeCapacityMultiplier);
+			amountOfMonstersPerLevel = new uint[difficultyLevel+1];
 			packs = addpacks(difficultyLevel, nodeCapacityMultiplier,numberOfMonsters);
 			player = new Player();
 			int totalMonsterHP = calculateTotalMonsterHP();
@@ -80,6 +82,8 @@ namespace STVRogue.GameLogic
 						throw new GameCreationException();
 					}
 					}
+				amountOfMonstersPerLevel[i] = monstersOnThisLevel;
+
 				monstersInDungeon += monstersOnThisLevel;
 			}
 			return packs;

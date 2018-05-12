@@ -24,8 +24,63 @@ namespace STVRogue.GameLogic
 		{
             Assert.Throws<GameCreationException>(() => new Game(5, 2, 300));
 		}
+			
+		[Fact]
+		public void CheckIfMonsterBalancingHolds()
+		{
+			uint difficultyLevel = 10;
+			uint nodeCapacityMultiplier = 5;
+			uint numberOfMonsters = 50;
+			uint monstersInDungeon = 0;
+			uint maxMonstersOnThisLevel, amountOfMonstersOnThisLevel;
+			Game game = new Game(difficultyLevel, nodeCapacityMultiplier, numberOfMonsters);
 
-        [Fact]
+			for (uint i = 0; i < game.dungeon.bridges.Length-1; i++)
+			{
+				amountOfMonstersOnThisLevel = game.amountOfMonstersPerLevel[i];
+				if (i < game.dungeon.bridges.Length - 2)
+				{
+					maxMonstersOnThisLevel = (2 * (i + 1) * numberOfMonsters) / ((difficultyLevel + 2) * (difficultyLevel + 1));
+					monstersInDungeon += maxMonstersOnThisLevel;
+				}
+				else
+				{
+					maxMonstersOnThisLevel = numberOfMonsters - monstersInDungeon;
+				}
+				Console.WriteLine(amountOfMonstersOnThisLevel);
+				Assert.True(amountOfMonstersOnThisLevel <= maxMonstersOnThisLevel);
+			}
+		}
+		
+		[Fact]
+		public void CheckIfItemBalancingHolds()
+		{
+			Game game = new Game(10, 5, 50);
+			int PlayerAndItemHP = game.player.HPbase;
+			int MonsterHP = 0;
+			for(int i = 0; i < game.items.Count; i++)
+			{
+				if(game.items[i] is HealingPotion)
+				{
+					HealingPotion potion = (HealingPotion)game.items[i];
+					PlayerAndItemHP += potion.HPvalue;
+				}
+
+
+			}
+			foreach (Pack p in game.packs)
+			{
+				foreach (Monster m in p.members)
+				{
+					MonsterHP += m.HP;
+				}
+			}
+			MonsterHP = (int) (MonsterHP * 0.8);
+			Assert.True(PlayerAndItemHP <= MonsterHP);
+
+		}
+		[Fact]
+		
         public void XTest_disconnect_nodes()
         {
             Node node1 = new Node("1");
