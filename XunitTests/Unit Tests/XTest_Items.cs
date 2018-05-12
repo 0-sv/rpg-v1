@@ -37,7 +37,7 @@ namespace STVRogue.GameLogic
                 HP = value
             };
 
-            // HP heals 25 hp. 
+            // HP heals 3 hp. 
             hp_potion = new HealingPotion("2");
 
             p.bag.Add(hp_potion);
@@ -85,10 +85,6 @@ namespace STVRogue.GameLogic
             p.Use(hp_potion);
 
             Assert.True(hp_potion.used);
-
-            p.Use(hp_potion);
-
-            Assert.
         }
         public static IEnumerable<object[]> HPData =>
             new List<object[]> { 
