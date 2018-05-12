@@ -11,7 +11,10 @@ namespace STVRogue.GameLogic
 	public class XTest_Items
 	{
         int hp_before_hp_potion;
+
+        Crystal c;
         HealingPotion hp_potion;
+        Item i;
         
         [Fact]
         public void IfPlayerUsesHPpotion_AndHPIsBase_ThenHpIsTheSame() {
@@ -45,6 +48,29 @@ namespace STVRogue.GameLogic
                 Assert.NotEqual(10, p.HP);
         }
 
+        [Fact]
+        public void IfHealingPotion_IsHealingPotionReturnTrue ()
+        {
+            hp_potion = new HealingPotion("3");
+
+            Assert.True(hp_potion.IsHealingPotion());
+        }
+
+        [Fact]
+        public void IfCrystal_IsCrystalReturnTrue()
+        {
+            c = new Crystal("1");
+            
+            Assert.True(c.IsCrystal());
+        }
+
+        [Fact]
+        public void IfItem_IsHealingPotion_OrCrystal_ReturnFalse()
+        {
+            i = new Item();
+            Assert.False(i.IsHealingPotion());
+            Assert.False(i.IsCrystal());
+        }
         public static IEnumerable<object[]> HPData =>
             new List<object[]> { 
                 new object[] { 0 },
