@@ -25,20 +25,19 @@ namespace STVRogue.GameLogic
 
 			difficultyLevel = level;
 			M = nodeCapacityMultiplier;
-			nodeList = PopulateNodeList(level);
+			nodeList = new List<Node>();
+			PopulateNodeList(level);
 			startNode = nodeList[0];
 			exitNode = nodeList[nodeList.Count - 1];
 
 		}
 
-		private List<Node> PopulateNodeList(uint level)
+		private void PopulateNodeList(uint level)
         {
             InitializeBridges(level);
             ConnectNodes(nodeList);
             ConnectBridges(nodeList);
             FinalizeConnectionofNonBridgeNodes(nodeList);
-
-            return nodeList;
         }
 
         private void InitializeBridges(uint level)
@@ -159,8 +158,13 @@ namespace STVRogue.GameLogic
 		public void Disconnect(Bridge b)
 		{
 			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
-			foreach (Node n in b.toNodes)
-				n.Disconnect(b);
+				for (int i = 0; i < b.neighbors.Count; i++)
+				{
+					if (Convert.ToInt32(b.neighbors[i].id) < Convert.ToInt32(b.id))
+					{
+						b.neighbors[i].Disconnect(b);
+					}
+				}
 			startNode = b;
 		}
 
