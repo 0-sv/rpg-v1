@@ -47,14 +47,6 @@ namespace STVRogue.GameLogic
         private uint KillPoint = 0;
         private List<Item> bag = new List<Item>();
 
-        public Player()
-        {
-            Console.WriteLine("What is your name?");
-            this.id = Console.ReadLine();
-            this.AttackRating = 5;
-            this.HP = HPbase;
-        }
-
         public Player(string id)
         {
             this.id = id;

@@ -34,7 +34,7 @@ namespace STVRogue.GameLogic
 
         [Fact]
         public void IfPlayerUsesHPpotion_AndHPIsBase_ThenHpIsTheSame() {
-            p = new Player();
+            p = new Player("1");
             hp_before_hp_potion = p.GetHP();
             hp_potion = new HealingPotion("1");
 
@@ -48,7 +48,7 @@ namespace STVRogue.GameLogic
         [Theory]
         [MemberData(nameof(HPData))]
         public void IfPlayerUsesHPpotion_AndHPIsLessThanBase_HPIsRestored (int value) {
-            Player p = new Player();
+            Player p = new Player("1");
             p.SetHP(value);
 
             // HP heals 3 hp. 
@@ -90,7 +90,7 @@ namespace STVRogue.GameLogic
 
         [Fact]
         public void IfItemIsUsedByPlayer_UsedIsTrue() {
-            p = new Player();
+            p = new Player("1");
             hp_potion = new HealingPotion("4");
 
             Assert.False(hp_potion.used);

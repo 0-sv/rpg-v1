@@ -13,7 +13,7 @@ namespace STVRogue
         static void Main(string[] args)
         {
             Game game = new Game(5, 2, 20);
-            Player player = new Player();
+            Player player = new Player("1");
             player.SetLocation(game.dungeon.startNode);
 
             while (true)
