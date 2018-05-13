@@ -29,7 +29,6 @@ namespace STVRogue.GameLogic
                 used = true;
             }
         }
-        
     }
 
     public class HealingPotion : Item

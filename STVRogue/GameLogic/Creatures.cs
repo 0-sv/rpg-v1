@@ -53,6 +53,9 @@ namespace STVRogue.GameLogic
         public int GetHPMax() => HPbase;
         public int GetHP() => HP;
 
+        public void PickUp(Item item) {
+            bag.Add(item);
+        }
 
         public void Use(Item item)
         {
