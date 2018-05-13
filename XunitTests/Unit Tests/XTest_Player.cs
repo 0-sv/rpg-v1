@@ -13,21 +13,24 @@ namespace STVRogue.GameLogic
      */
     public class XTest_Player
     {
-        Player P = new Player();
+        Player p = new Player();
         [Fact]
         public void XTest_use_onEmptyBag()
         {
-            Assert.Throws<ArgumentException>(() => P.Use(new Item()));
+            Assert.Throws<ArgumentException>(() => p.Use(new Item()));
         }
 
         [Fact]
         public void XTest_use_item_in_bag()
         {
-            
             Item x = new HealingPotion("pot1");
-            P.bag.Add(x);
-            P.Use(x);
-            Assert.DoesNotContain(x, P.bag);
+            p.bag.Add(x);
+            p.Use(x);
+            Assert.DoesNotContain(x, p.bag);
         }
+
+        [Theory]
+        [MemberData(typeof(Data))]
+        public void TestItemCapac
     }
 }
