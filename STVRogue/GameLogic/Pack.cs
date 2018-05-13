@@ -22,7 +22,7 @@ namespace STVRogue.GameLogic
             {
                 Monster m = new Monster("" + id + "_" + i);
                 members.Add(m);
-                startingHP += m.HP;
+                startingHP += m.GetHP();
             }
         }
 
@@ -31,7 +31,8 @@ namespace STVRogue.GameLogic
             foreach (Monster m in members)
             {
                 m.Attack(p);
-                if (p.HP == 0) return;
+                if (p.GetHP() == 0) 
+                    return;
             }
         }
 

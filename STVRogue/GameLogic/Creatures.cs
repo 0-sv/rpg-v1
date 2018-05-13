@@ -9,12 +9,12 @@ namespace STVRogue.GameLogic
 {
     public class Creature
     {
-        public String id;
-        public String name;
-        public int HP;
-        public uint AttackRating = 1;
-        public Node location;
-        public Creature() { }
+        protected String id;
+        protected String name;
+        protected int HP;
+        protected int AttackRating = 1;
+        protected Node location;
+        protected Creature() { }
         virtual public void Attack(Creature foe)
         {
             foe.HP = (int)Math.Max(0, foe.HP - AttackRating);
@@ -33,25 +33,40 @@ namespace STVRogue.GameLogic
             this.id = id; name = "Orc";
             HP = 1 + RandomGenerator.rnd.Next(6);
         }
+
+        public Pack GetPack() => pack;
+        public void SetHP(int HP) => this.HP = HP;
+        public int GetHP() => HP;
     }
 
     public class Player : Creature
     {
-        public Dungeon dungeon;
-        public int HPbase = 10;
-        public Boolean accelerated = false;
-        public uint KillPoint = 0;
-        public List<Item> bag = new List<Item>();
+        private Dungeon dungeon;
+        private int HPbase = 10;
+        private Boolean accelerated = false;
+        private uint KillPoint = 0;
+        private List<Item> bag = new List<Item>();
 
         public Player()
         {
-            id = "player";
-            AttackRating = 5;
-            HP = HPbase;
+            Console.WriteLine("What is your name?");
+            this.id = Console.ReadLine();
+            this.AttackRating = 5;
+            this.HP = HPbase;
+        }
+
+        public Player(string id)
+        {
+            this.id = id;
+            this.AttackRating = 5;
+            this.HP = HPbase;
         }
 
         public int GetHPMax() => HPbase;
         public int GetHP() => HP;
+        public int GetAttackRating() => AttackRating;
+        public List<Item> GetBag() => bag;
+        public void SetBag(Item i) => bag.Add(i);
 
         public void PickUp(Item item) {
             bag.Add(item);
@@ -71,7 +86,7 @@ namespace STVRogue.GameLogic
             if (!accelerated)
             {
                 base.Attack(foe);
-                if (foe_.HP == 0)
+                if (foe_.GetHP() == 0)
                 {
                     foe_.pack.members.Remove(foe_);
                     KillPoint++;
