@@ -32,50 +32,62 @@ namespace STVRogue.GameLogic
 		}
 
 		private List<Node> PopulateNodeList(uint level)
+        {
+            InitializeBridges(level);
+            ConnectNodes(nodeList);
+            ConnectBridges(nodeList);
+            FinalizeConnectionofNonBridgeNodes(nodeList);
+
+            return nodeList;
+        }
+
+        private void InitializeBridges(uint level)
+        {
+            bridges = new int[level + 2];
+            InitializeNodeList(difficultyLevel, bridges);
+            bridges[level + 1] = nodeList.Count() - 1;
+        }
+
+        private void FinalizeConnectionofNonBridgeNodes(List<Node> nodeList)
+        {
+            int amountOfPassedBridges = 0;
+            for (int i = 0; i < nodeList.Count - 1; i++)
+            {
+                if (i == bridges[amountOfPassedBridges + 1])
+                {
+                    amountOfPassedBridges++;
+                }
+                for (int j = i + 2; j < bridges[amountOfPassedBridges + 1]; j++)
+                { // max 4 neighbors per node
+                    if (nodeList[i].neighbors.Count < 4 && nodeList[j].neighbors.Count < 4)
+                    {
+                        if (randomnum.Next(1, 4) == 1)
+                        {
+                            nodeList[i].Connect(nodeList[j]);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ConnectBridges(List<Node> nodeList)
+        {
+            for (int i = 0; i < bridges.Length - 1; i++)
+            {
+                nodeList[bridges[i + 1]].Connect(nodeList[bridges[i]]);
+            }
+        }
+
+        private static void ConnectNodes(List<Node> nodeList)
+        {
+            for (int i = 0; i < nodeList.Count - 1; i++)
+            {
+                nodeList[i].Connect(nodeList[i + 1]);
+            }
+        }
+
+        private void InitializeNodeList(uint level, int[] bridges)
 		{
-			// array met indices van alle bridges
-			bridges = new int[level + 2];
-			List<Node> nodeList = InitializeNodeList(difficultyLevel, bridges);
-			bridges[level+1] = nodeList.Count() - 1;
-			// amount of bridges passed
-			int bridgeloc = 0;
-
-
-			// connect each node with the next one to ensure no nodes are disconnected
-			for (int i = 0; i < nodeList.Count - 1; i++)
-			{
-				nodeList[i].Connect(nodeList[i + 1]);
-			}
-
-			// connect all bridges
-			for (int i = 0; i < bridges.Length - 1; i++)
-			{
-				nodeList[bridges[i + 1]].Connect(nodeList[bridges[i]]);
-			}
-			// connect some non-bridge nodes
-			for (int i = 0; i < nodeList.Count - 1; i++)
-			{
-				if (i == bridges[bridgeloc + 1])
-				{
-					bridgeloc++;
-				}
-				for (int j = i + 2; j < bridges[bridgeloc + 1]; j++)
-				{ // max 4 neighbors per node
-					if (nodeList[i].neighbors.Count < 4 && nodeList[j].neighbors.Count < 4)
-					{
-						if (randomnum.Next(1, 4) == 1)
-						{
-							nodeList[i].Connect(nodeList[j]);
-						}
-					}
-				}
-			}
-				return nodeList;
-		}
-
-		private static List<Node> InitializeNodeList(uint level, int[] bridges)
-		{
-			List<Node> nodeList = new List<Node>();
 			Random rnd = new Random();
 			int nodesonthislevel;
 			int node_id = -1;
@@ -104,7 +116,6 @@ namespace STVRogue.GameLogic
 					nodeList.Add(n);
 				}
 			}
-			return nodeList;
 		}
 
 		/* Return a shortest path between node u and node v */
