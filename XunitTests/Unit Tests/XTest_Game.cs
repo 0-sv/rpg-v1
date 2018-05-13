@@ -10,8 +10,6 @@ namespace STVRogue.GameLogic
 {
 	public class XTest_Game
 	{
-
-		
 		[Fact]
 		public void checkIfValidDungeon()
 		{
