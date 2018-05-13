@@ -10,6 +10,8 @@ namespace STVRogue.GameLogic
 {
 	public class XTest_Game
 	{
+
+		
 		[Fact]
 		public void checkIfValidDungeon()
 		{
@@ -20,7 +22,7 @@ namespace STVRogue.GameLogic
 		[Fact]
 		public void checkIfTooManyMonstersThrowsException()
 		{
-            Assert.Throws<GameCreationException>(() => new Game(5, 2, 300));
+            Assert.Throws<GameCreationException> (() => new Game(5, 2, 300));
 		}
 		[Fact]
 		public void checkIfMonstersSpawn()
@@ -54,7 +56,6 @@ namespace STVRogue.GameLogic
 				{
 					maxMonstersOnThisLevel = numberOfMonsters - monstersInDungeon;
 				}
-				Console.WriteLine(amountOfMonstersOnThisLevel);
 				Assert.True(amountOfMonstersOnThisLevel <= maxMonstersOnThisLevel);
 			}
 		}

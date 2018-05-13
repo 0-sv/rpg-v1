@@ -79,8 +79,7 @@ namespace STVRogue.GameLogic
 					packs.Add(pack);
 					if(count > nodesOnThisLevelInRandomOrder.Count-1)
 					{
-						Console.WriteLine("Amount of monsters and nodeCapacityMultiplier are not compatible");
-						throw new GameCreationException();
+						throw new GameCreationException("Amount of monsters and nodeCapacityMultiplier are not compatible");
 					}
 					}
 				amountOfMonstersPerLevel[i] = monstersOnThisLevel;
