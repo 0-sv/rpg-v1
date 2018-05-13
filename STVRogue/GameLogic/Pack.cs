@@ -61,6 +61,7 @@ namespace STVRogue.GameLogic
         {
             List<Node> path = dungeon.Shortestpath(location, u);
             move(path[0]);
+            path.Remove(path[0]);
         }
     }
 }
