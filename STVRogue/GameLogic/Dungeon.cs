@@ -22,7 +22,7 @@ namespace STVRogue.GameLogic
 		public Dungeon(uint level, uint nodeCapacityMultiplier)
 		{
 			Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
-
+            nodeList = new List<Node>();
 			difficultyLevel = level;
 			M = nodeCapacityMultiplier;
 			nodeList = PopulateNodeList(level);
