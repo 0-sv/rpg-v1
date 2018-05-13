@@ -31,14 +31,15 @@ namespace STVRogue.GameLogic
             foreach (Monster m in members)
             {
                 m.Attack(p);
-                if (p.HP == 0) break;
+                if (p.HP == 0) return;
             }
         }
 
         /* Move the pack to an adjacent node. */
-        public void move(Node u)
+        public void Move(Node u)
         {
-            if (!location.neighbors.Contains(u)) throw new ArgumentException();
+            if (!location.neighbors.Contains(u)) 
+                throw new ArgumentException();
             int capacity = (int) (dungeon.M * (dungeon.Level(u) + 1));
             // count monsters already in the node:
             foreach (Pack Q in location.packs) {
@@ -53,14 +54,13 @@ namespace STVRogue.GameLogic
             location = u;
             u.packs.Add(this);
             Logger.log("Pack " + id + " moves to an already full node " + u.id + ". Rejected.");
-
         }
 
         /* Move the pack one node further along a shortest path to u. */
-        public void moveTowards(Node u)
+        public void MoveTowards(Node u)
         {
             List<Node> path = dungeon.Shortestpath(location, u);
-            move(path[0]);
+            Move(path[0]);
             path.Remove(path[0]);
         }
     }
