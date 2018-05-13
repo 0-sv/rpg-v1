@@ -74,7 +74,8 @@ namespace STVRogue.GameLogic
 					monstersOnThisLevel += (uint)amountOfMonsters;
 
 					Pack pack = new Pack(pack_id++.ToString(), (uint)amountOfMonsters);
-					pack.location = dungeon.nodeList[nodesOnThisLevelInRandomOrder[count++]];
+					pack.location = dungeon.nodeList[nodesOnThisLevelInRandomOrder[count]];
+					dungeon.nodeList[nodesOnThisLevelInRandomOrder[count++]].packs.Add(pack);
 					packs.Add(pack);
 					if(count > nodesOnThisLevelInRandomOrder.Count-1)
 					{
@@ -110,10 +111,11 @@ namespace STVRogue.GameLogic
 			int item_id = -1;
 			int count = 0;
 			List<int> allNodesInRandomOrder = Enumerable.Range(1, nodeMax-1).OrderBy(x => randomnum.Next()).ToList();
-			while ((itemAndPlayerHP+11) < HPlimit)
+			while ((itemAndPlayerHP+11) < HPlimit && count < allNodesInRandomOrder.Count )
 			{
 				HealingPotion item = new HealingPotion(item_id++.ToString());
-				item.location = dungeon.nodeList[allNodesInRandomOrder[count++]];
+				item.location = dungeon.nodeList[allNodesInRandomOrder[count]];
+				dungeon.nodeList[allNodesInRandomOrder[count++]].items.Add(item);
 				itemAndPlayerHP += item.HPvalue;
 				items.Add(item);
 			}
