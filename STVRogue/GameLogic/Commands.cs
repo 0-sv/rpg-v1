@@ -9,11 +9,11 @@ namespace STVRogue
         private Player player;
         private Node node;
 
-        public Command (Node node, Player player) {
+        public Command (Player player) {
             WritePossibleActionsToScreen();
             action = Console.ReadLine();
             this.player = player;
-            this.node = node;
+            this.node = player.GetLocation();
         }
 
         public void ExecuteCommand() {

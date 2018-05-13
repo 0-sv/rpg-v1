@@ -14,7 +14,7 @@ namespace STVRogue.GameLogic
         public void IfPlayerIsCreatedStatsAreOK()
         {
             p = new Player("Mark");
-            Assert.Equal(100, p.GetHP());
+            Assert.Equal(10, p.GetHP());
             Assert.Equal(5, p.GetAttackRating());
         }
     }

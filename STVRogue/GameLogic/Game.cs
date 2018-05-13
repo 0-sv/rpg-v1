@@ -38,10 +38,6 @@ namespace STVRogue.GameLogic
 			if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
 				throw new GameCreationException();
 			}
-
-
-
-			
 		}
 		public List<Pack> addpacks(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
 		{
@@ -128,24 +124,13 @@ namespace STVRogue.GameLogic
 				}
 				count++;
 			}
-			
-
-
-
-
-			
-
 			return items;
 		}
 
         /*
          * A single update turn to the game. 
          */
-        public Boolean Update(Command userCommand)
-        {
-            Logger.log("Player does " + userCommand);
-            return true;
-        }
+        public void Update(Command c) => c.ExecuteCommand();
     }
 
     public class GameCreationException : Exception
