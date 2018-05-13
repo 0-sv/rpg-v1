@@ -27,7 +27,7 @@ namespace STVRogue.GameLogic
 				if(dungeon.nodeList[i] is Bridge)
 				{
 					dungeon.Disconnect((Bridge)dungeon.nodeList[i]);
-					Assert.True(dungeon.nodeList[i].neighbors.Count == 2);
+					Assert.True(dungeon.nodeList[i].neighbors.Count < 4);
 				}
 
 			}
