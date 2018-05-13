@@ -96,7 +96,7 @@ namespace STVRogue.GameLogic
 			{
 				foreach(Monster m in p.members)
 				{
-					totalHP += m.HP;
+					totalHP += m.GetHP();
 				}
 			}
 			return totalHP;

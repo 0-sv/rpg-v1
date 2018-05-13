@@ -204,7 +204,7 @@ namespace STVRogue.GameLogic
          */
 		public void Combat(Player player)
 		{
-			while (this.packs.Any() || player.HP != 0)
+			while (this.packs.Any() || player.GetHP() != 0)
 			{
 				Command c = new Command(this, player);
 				c.ExecuteCommand();

@@ -28,7 +28,7 @@ namespace STVRogue.GameLogic
 		public void checkIfMonstersSpawn()
 		{
 			Game game = new Game(10, 5, 50);
-			foreach(Pack pack in game.packs)
+			foreach (Pack pack in game.packs)
 			{
 				Assert.NotEmpty(pack.members);
 			}
@@ -80,7 +80,7 @@ namespace STVRogue.GameLogic
 			{
 				foreach (Monster m in p.members)
 				{
-					MonsterHP += m.HP;
+					MonsterHP += m.GetHP();
 				}
 			}
 			MonsterHP = (int) (MonsterHP * 0.8);

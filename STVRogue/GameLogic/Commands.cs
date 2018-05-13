@@ -50,7 +50,7 @@ namespace STVRogue
         }
 
         private void UseCrystal() {
-            foreach (Item i in player.bag) 
+            foreach (Item i in player.GetBag()) 
                 if (i.IsCrystal) {
                     player.Use(i);
                     return;
@@ -58,7 +58,7 @@ namespace STVRogue
         }
 
         private void UseHPPotion() {
-            foreach (Item i in player.bag) {
+            foreach (Item i in player.GetBag()) {
                 if (i.IsHealingPotion) {
                     player.Use(i);
                     return;
@@ -66,9 +66,7 @@ namespace STVRogue
             }
         }
 
-        private void Flee() {
-            player.location = node.neighbors[0];
-        }
+        private void Flee() => player.SetLocation(node.neighbors[0]);
 
         private void WritePossibleActionsToScreen() {
             Console.WriteLine("Perform an action by typing: ");

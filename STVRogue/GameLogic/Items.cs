@@ -20,12 +20,12 @@ namespace STVRogue.GameLogic
         virtual public void Use(Player player)
         {
             if (used) {
-                Logger.log("" + player.id + " is trying to use an expired item: "
+                Logger.log("" + player.GetID() + " is trying to use an expired item: "
                               + this.GetType().Name + " " + id
                               + ". Rejected.");
             }
             else {
-                Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
+                Logger.log("" + player.GetID() + " uses " + this.GetType().Name + " " + id);
                 used = true;
             }
         }
@@ -45,7 +45,7 @@ namespace STVRogue.GameLogic
         override public void Use(Player player)
         {
             base.Use(player);
-            player.HP = Math.Min(player.HPbase, player.HP + HPvalue);
+            player.SetHP(Math.Min(player.HPbase, player.GetHP() + HPvalue));
         }
     }
 
@@ -56,9 +56,9 @@ namespace STVRogue.GameLogic
         override public void Use(Player player)
         {
             base.Use(player);
-            player.accelerated = true;
-            if (player.location is Bridge) 
-                player.dungeon.Disconnect(player.location as Bridge);
+            player.SetAccelerated(true);
+            if (player.GetLocation() is Bridge) 
+                player.dungeon.Disconnect(player.GetLocation() as Bridge);
         }
     }
 }

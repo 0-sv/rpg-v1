@@ -27,9 +27,9 @@ namespace STVRogue.GameLogic
         public void UseItemInBag()
         {
             i = new HealingPotion("pot1");
-            p.bag.Add(i);
+            p.SetBag(i);
             p.Use(i);
-            Assert.DoesNotContain(i, p.bag);
+            Assert.DoesNotContain(i, p.GetBag());
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace STVRogue.GameLogic
             hp_before_hp_potion = p.GetHP();
             hp_potion = new HealingPotion("1");
 
-            p.bag.Add(hp_potion);
+            p.SetBag(hp_potion);
             p.Use(hp_potion);
 
             Assert.Equal(p.GetHP(), hp_before_hp_potion);
@@ -48,20 +48,19 @@ namespace STVRogue.GameLogic
         [Theory]
         [MemberData(nameof(HPData))]
         public void IfPlayerUsesHPpotion_AndHPIsLessThanBase_HPIsRestored (int value) {
-            Player p = new Player {
-                HP = value
-            };
+            Player p = new Player();
+            p.SetHP(value);
 
             // HP heals 3 hp. 
             hp_potion = new HealingPotion("2");
 
-            p.bag.Add(hp_potion);
+            p.SetBag(hp_potion);
             p.Use(hp_potion);
 
             if (value >= 7)
-                Assert.Equal(10, p.HP);
+                Assert.Equal(10, p.GetHP());
             else 
-                Assert.NotEqual(10, p.HP);
+                Assert.NotEqual(10, p.GetHP());
         }
 
         [Fact]
@@ -96,7 +95,7 @@ namespace STVRogue.GameLogic
 
             Assert.False(hp_potion.used);
 
-            p.bag.Add(hp_potion);
+            p.SetBag(hp_potion);
             p.Use(hp_potion);
 
             Assert.True(hp_potion.used);

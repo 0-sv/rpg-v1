@@ -41,8 +41,8 @@ namespace STVRogue.GameLogic
 
     public class Player : Creature
     {
-        private Dungeon dungeon;
-        private int HPbase = 10;
+        public Dungeon dungeon;
+        public int HPbase = 10;
         private Boolean accelerated = false;
         private uint KillPoint = 0;
         private List<Item> bag = new List<Item>();
@@ -62,11 +62,17 @@ namespace STVRogue.GameLogic
             this.HP = HPbase;
         }
 
+        public bool GetAccelerated() => accelerated;
+        public int GetAttackRating() => AttackRating;
         public int GetHPMax() => HPbase;
         public int GetHP() => HP;
-        public int GetAttackRating() => AttackRating;
+        public Node GetLocation() => location;
+        public string GetID() => id;
         public List<Item> GetBag() => bag;
         public void SetBag(Item i) => bag.Add(i);
+        public void SetHP(int hp) => HP = hp;
+        public void SetAccelerated(bool IsAccelerated) => accelerated = IsAccelerated;
+        public void SetLocation(Node n) => location = n;
 
         public void PickUp(Item item) {
             bag.Add(item);
@@ -99,7 +105,7 @@ namespace STVRogue.GameLogic
                     base.Attack(target);
                 }
                 int packCount = foe_.pack.members.Count;
-                foe_.pack.members.RemoveAll(target => target.HP <= 0);
+                foe_.pack.members.RemoveAll(target => target.GetHP() <= 0);
                 KillPoint += (uint)(packCount - foe_.pack.members.Count);
                 accelerated = false;
             }

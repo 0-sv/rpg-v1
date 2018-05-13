@@ -9,6 +9,13 @@ namespace STVRogue.GameLogic
 {
     public class XTest_Player
     {
-
+        Player p;
+        [Fact]
+        public void IfPlayerIsCreatedStatsAreOK()
+        {
+            p = new Player("Mark");
+            Assert.Equal(100, p.GetHP());
+            Assert.Equal(5, p.GetAttackRating());
+        }
     }
 }
