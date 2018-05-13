@@ -35,9 +35,6 @@ namespace STVRogue.GameLogic
 			
 			items = additems(totalMonsterHP, dungeon.bridges[dungeon.bridges.Length-1], player.HPbase);
 			p = new Predicates();
-			if (!p.isValidDungeon(dungeon.startNode, dungeon.exitNode, difficultyLevel)) {
-				throw new GameCreationException();
-			}
 		}
 		public List<Pack> addpacks(uint difficultyLevel, uint nodeCapcityMultiplier, uint numberOfMonsters)
 		{

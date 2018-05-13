@@ -88,7 +88,18 @@ namespace STVRogue.GameLogic
 
 		}
 		[Fact]
-		
+
+		public void CheckItemBalancingOnSmallDungeon()
+		{
+			Game game = new Game(2, 5, 1);
+			for (int i = 0; i < game.items.Count; i++)
+			{
+				Assert.False(game.items[i] is HealingPotion);
+
+			}
+		}
+
+		[Fact]
         public void XTest_disconnect_nodes()
         {
             Node node1 = new Node("1");
@@ -136,5 +147,14 @@ namespace STVRogue.GameLogic
             d.nodeList = new List<Node>() { node1, node2, node3, node4 };
             Assert.Equal(d.Shortestpath(node1, node4), new List<Node>() { node1 });
         }
+		[Fact]
+		public void emptypath()
+		{
+			Dungeon d = new Dungeon(1, 2);
+			Node node1 = new Node("1");
+			d.nodeList = new List<Node>() { node1 };
+			List<Node> l = d.Shortestpath(node1, node1);
+			Assert.Empty(l);
+		}
 	}
 }
