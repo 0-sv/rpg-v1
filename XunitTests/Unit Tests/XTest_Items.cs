@@ -16,7 +16,22 @@ namespace STVRogue.GameLogic
         Crystal c;
         HealingPotion hp_potion;
         Item i;
-        
+
+        [Fact]
+        public void UseOnEmptyBag()
+        {
+            Assert.Throws<ArgumentException>(() => p.Use(new Item()));
+        }
+
+        [Fact]
+        public void UseItemInBag()
+        {
+            i = new HealingPotion("pot1");
+            p.bag.Add(i);
+            p.Use(i);
+            Assert.DoesNotContain(i, p.bag);
+        }
+
         [Fact]
         public void IfPlayerUsesHPpotion_AndHPIsBase_ThenHpIsTheSame() {
             p = new Player();
