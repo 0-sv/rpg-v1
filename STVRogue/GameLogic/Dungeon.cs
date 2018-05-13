@@ -206,7 +206,7 @@ namespace STVRogue.GameLogic
 		{
 			while (this.packs.Any() || player.GetHP() != 0)
 			{
-				Command c = new Command(this, player);
+				Command c = new Command(player);
 				c.ExecuteCommand();
 			}
 		}
