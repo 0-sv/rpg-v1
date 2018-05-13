@@ -20,15 +20,19 @@ namespace STVRogue.GameLogic
         [Fact]
         public void UseOnEmptyBag()
         {
+            p = new Player("1");
             Assert.Throws<ArgumentException>(() => p.Use(new Item()));
         }
 
         [Fact]
         public void UseItemInBag()
         {
+            p = new Player("1");
             i = new HealingPotion("pot1");
+
             p.SetBag(i);
             p.Use(i);
+
             Assert.DoesNotContain(i, p.GetBag());
         }
 
