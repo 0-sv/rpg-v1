@@ -10,24 +10,26 @@ namespace STVRogue.GameLogic
     public class Item
     {
         public String id;
-        public Boolean used = false;
+        protected Boolean used = false;
 		public Node location;
         public bool IsHealingPotion => false;
         public bool IsCrystal => false;
         public Item() { }
         public Item(String id) { this.id = id; }
 
+        public bool GetUsed() => used;
+
         virtual public void Use(Player player)
         {
-            try {
+            if (used) {
                 Logger.log("" + player.GetID() + " is trying to use an expired item: "
                               + this.GetType().Name + " " + id
                               + ". Rejected.");
                 throw new Exception();
             }
-            catch (Exception e) {
+            else {
                 Logger.log("" + player.GetID() + " uses " + this.GetType().Name + " " + id);
-                Logger.log(e.ToString());
+                used = true;
             }
         }
     }

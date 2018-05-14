@@ -72,7 +72,7 @@ namespace STVRogue.GameLogic
 
         public void Use(Item item)
         {
-            if (!bag.Contains(item) || item.used) throw new ArgumentException();
+            if (!bag.Contains(item) || item.GetUsed()) throw new ArgumentException();
             item.Use(this);
             bag.Remove(item);
         }
