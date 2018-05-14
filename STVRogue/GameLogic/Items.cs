@@ -19,6 +19,7 @@ namespace STVRogue.GameLogic
 
         virtual public void Use(Player player)
         {
+<<<<<<< HEAD
             try {
                 Logger.log("" + player.GetID() + " is trying to use an expired item: "
                               + this.GetType().Name + " " + id
@@ -28,6 +29,15 @@ namespace STVRogue.GameLogic
             catch (Exception e) {
                 Logger.log("" + player.GetID() + " uses " + this.GetType().Name + " " + id);
                 Logger.log(e.ToString());
+=======
+            if (used) {
+                Logger.log("" + player.GetID() + " is trying to use an expired item: "
+                              + this.GetType().Name + " " + id
+                              + ". Rejected.");
+            }
+            else {
+                Logger.log("" + player.GetID() + " uses " + this.GetType().Name + " " + id);
+>>>>>>> parent of 04198cf... Use in the Item class is unnecessary because the player always uses it.
                 used = true;
             }
         }
