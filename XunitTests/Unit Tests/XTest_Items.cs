@@ -118,7 +118,4 @@ namespace STVRogue.GameLogic
                 new object[] { 9 },
             };
         }
-
-
-
 }
