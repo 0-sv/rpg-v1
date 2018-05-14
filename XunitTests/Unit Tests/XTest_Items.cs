@@ -93,6 +93,14 @@ namespace STVRogue.GameLogic
         }
 
         [Fact]
+        public void IfItemIsUsedWithoutPlayerAndItemIsUsed_DoNothing ()
+        {
+            i = new Item();
+            i.used = true;
+            Assert.Throws<Exception>(() => i.Use(p));
+        }
+
+        [Fact]
         public void IfItemIsUsedByPlayer_UsedIsTrue() {
             p = new Player("1");
             hp_potion = new HealingPotion("4");
