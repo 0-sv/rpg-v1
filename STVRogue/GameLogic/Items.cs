@@ -17,18 +17,18 @@ namespace STVRogue.GameLogic
         public Item() { }
         public Item(String id) { this.id = id; }
 
-        public bool GetUsed() => used;
+        public bool IsUsed() => used;
 
         virtual public void Use(Player player)
         {
             if (used) {
-                Logger.log("" + player.GetID() + " is trying to use an expired item: "
+                Logger.log("" + player.id + " is trying to use an expired item: "
                               + this.GetType().Name + " " + id
                               + ". Rejected.");
                 throw new Exception();
             }
             else {
-                Logger.log("" + player.GetID() + " uses " + this.GetType().Name + " " + id);
+                Logger.log("" + player.id + " uses " + this.GetType().Name + " " + id);
                 used = true;
             }
         }
@@ -48,7 +48,7 @@ namespace STVRogue.GameLogic
         override public void Use(Player player)
         {
             base.Use(player);
-            player.SetHP(Math.Min(player.HPbase, player.GetHP() + HPvalue));
+            player.HP = Math.Min(player.HPbase, player.HP + HPvalue);
         }
     }
 
@@ -56,12 +56,11 @@ namespace STVRogue.GameLogic
     {
         new public bool IsCrystal => true;
         public Crystal(String id) : base(id) { }
-        override public void Use(Player player)
-        {
+        override public void Use(Player player) {
             base.Use(player);
-            player.SetAccelerated(true);
-            if (player.GetLocation() is Bridge) 
-                player.dungeon.Disconnect(player.GetLocation() as Bridge);
+            player.Accelerate();
+            if (player.location is Bridge) 
+                player.location.Disconnect(player.location as Bridge);
         }
     }
 }

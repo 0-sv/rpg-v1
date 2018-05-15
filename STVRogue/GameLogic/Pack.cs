@@ -31,7 +31,7 @@ namespace STVRogue.GameLogic
             foreach (Monster m in members)
             {
                 m.Attack(p);
-                if (p.GetHP() == 0) 
+                if (p.HP == 0) 
                     return;
             }
         }

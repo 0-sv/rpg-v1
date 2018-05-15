@@ -20,41 +20,33 @@ namespace STVRogue.GameLogic
         [Fact]
         public void UseOnEmptyBag()
         {
-            Assert.Throws<ArgumentException>(() => p.Use(new Item()));
-        }
-
-        [Fact]
-        public void UseItemInBag()
-        {
-            p.SetBag(i);
-            p.Use(i);
-
-            Assert.DoesNotContain(i, p.GetBag());
+            Assert.Throws<ArgumentException>(() => p.Heal());
+            Assert.Throws<ArgumentException>(() => p.Accelerate());
         }
 
         [Fact]
         public void IfPlayerUsesHPpotion_AndHPIsBase_ThenHpIsTheSame() {
-            hp_before_hp_potion = p.GetHP();
+            hp_before_hp_potion = p.HP;
 
-            p.SetBag(hp_potion);
-            p.Use(hp_potion);
+            p.PickUp(hp_potion);
+            p.Heal();
 
-            Assert.Equal(p.GetHP(), hp_before_hp_potion);
+            Assert.Equal(p.HP, hp_before_hp_potion);
         }
 
         /* if the first test runs, then we can safely use an arbitrary value as HP as parameter */
         [Theory]
         [MemberData(nameof(HPData))]
         public void IfPlayerUsesHPpotion_AndHPIsLessThanBase_HPIsRestored (int value) {
-            p.SetHP(value);
+            p.HP = value;
 
-            p.SetBag(hp_potion);
-            p.Use(hp_potion);
+            p.PickUp(hp_potion);
+            p.Heal();
 
             if (value >= 7)
-                Assert.Equal(10, p.GetHP());
+                Assert.Equal(10, p.HP);
             else 
-                Assert.NotEqual(10, p.GetHP());
+                Assert.NotEqual(10, p.HP);
         }
 
         [Fact]
@@ -85,12 +77,12 @@ namespace STVRogue.GameLogic
 
         [Fact]
         public void IfItemIsUsedByPlayer_UsedIsTrue() {
-            Assert.False(hp_potion.GetUsed());
+            Assert.False(hp_potion.IsUsed());
 
-            p.SetBag(hp_potion);
-            p.Use(hp_potion);
+            p.PickUp(hp_potion);
+            p.Heal();
 
-            Assert.True(hp_potion.GetUsed());
+            Assert.True(hp_potion.IsUsed());
         }
         public static IEnumerable<object[]> HPData =>
             new List<object[]> { 

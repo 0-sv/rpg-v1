@@ -29,7 +29,6 @@ namespace STVRogue.GameLogic
 			PopulateNodeList(level);
 			startNode = nodeList[0];
 			exitNode = nodeList[nodeList.Count - 1];
-
 		}
 
 		private void PopulateNodeList(uint level)
@@ -182,34 +181,34 @@ namespace STVRogue.GameLogic
 		public List<Pack> packs = new List<Pack>();
 		public List<Item> items = new List<Item>();
 
-		public Node() { }
+        public Node() { }
 		public Node(String id) { this.id = id; }
 
-		/* To connect this node to another node. */
 		public void Connect(Node nd)
 		{
-			neighbors.Add(nd); nd.neighbors.Add(this);
+			neighbors.Add(nd); 
+            nd.neighbors.Add(this);
 		}
 
-		/* To disconnect this node from the given node. */
 		public void Disconnect(Node nd)
 		{
-			neighbors.Remove(nd); nd.neighbors.Remove(this);
+			neighbors.Remove(nd); 
+            nd.neighbors.Remove(this);
 		}
 
-		/* Execute a fight between the player and the packs in this node.
-         * Such a fight can take multiple rounds as describe in the Project Document.
-         * A fight terminates when either the node has no more monster-pack, or when
-         * the player's HP is reduced to 0. 
-         */
-		public void Combat(Player player)
-		{
-			while (this.packs.Any() || player.GetHP() != 0)
-			{
-				Command c = new Command(player);
-				c.ExecuteCommand();
-			}
-		}
+		public void Combat(Player player) {
+			Command c = player.GetNextCommand();
+            c.ExecuteCommand();
+
+            if (c.attack)
+                // To do: combat
+                player.Attack(packs[0].members[0]);
+            foreach (Pack p in packs)
+                foreach (Monster m in p.members) {
+                    // To do: combat
+                    m.Attack(player);
+                }
+        }
 	}
 
 	public class Bridge : Node
@@ -218,16 +217,12 @@ namespace STVRogue.GameLogic
 		public List<Node> toNodes = new List<Node>();
 		public Bridge(String id) : base(id) { }
 
-		/* Use this to connect the bridge to a node from the same zone. */
-		public void ConnectToNodeOfSameZone(Node nd)
-		{
+		public void ConnectToNodeOfSameZone(Node nd) {
 			base.Connect(nd);
 			fromNodes.Add(nd);
 		}
 
-		/* Use this to connect the bridge to a node from the next zone. */
-		public void ConnectToNodeOfNextZone(Node nd)
-		{
+		public void ConnectToNodeOfNextZone(Node nd) {
 			base.Connect(nd);
 			toNodes.Add(nd);
 		}

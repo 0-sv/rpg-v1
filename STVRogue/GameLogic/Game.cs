@@ -124,10 +124,13 @@ namespace STVRogue.GameLogic
 			return items;
 		}
 
-        /*
-         * A single update turn to the game. 
-         */
-        public void Update(Command c) => c.ExecuteCommand();
+        public void Update()
+        {
+            if (player.location.packs.Any())
+                player.location.Combat(player);
+            else
+                new Command(player).ExecuteCommand();
+        }
     }
 
     public class GameCreationException : Exception

@@ -9,11 +9,11 @@ namespace STVRogue.GameLogic
 {
     public class Creature
     {
-        protected String id;
-        protected String name;
-        protected int HP;
-        protected int AttackRating = 1;
-        protected Node location;
+        public String id;
+        public String name;
+        public int HP;
+        public int AttackRating = 1;
+        public Node location;
         protected Creature() { }
         virtual public void Attack(Creature foe)
         {
@@ -41,44 +41,41 @@ namespace STVRogue.GameLogic
 
     public class Player : Creature
     {
-        public Dungeon dungeon;
         public int HPbase = 10;
-        private Boolean accelerated = false;
-        private uint KillPoint = 0;
-        private List<Item> bag = new List<Item>();
+        public Boolean accelerated;
+        public uint KillPoint;
+        public List<Item> bag;
 
-        public Player(string id)
-        {
+        public Player(string id) {
             this.id = id;
             this.AttackRating = 5;
             this.HP = HPbase;
+            this.KillPoint = 0;
+            this.accelerated = false;
+            this.bag = new List<Item>();
         }
 
-        public bool GetAccelerated() => accelerated;
-        public int GetAttackRating() => AttackRating;
-        public int GetHPMax() => HPbase;
-        public int GetHP() => HP;
-        public Node GetLocation() => location;
-        public string GetID() => id;
-        public List<Item> GetBag() => bag;
-        public void SetBag(Item i) => bag.Add(i);
-        public void SetHP(int hp) => HP = hp;
-        public void SetAccelerated(bool IsAccelerated) => accelerated = IsAccelerated;
-        public void SetLocation(Node n) => location = n;
+        public void PickUp(Item item) => bag.Add(item);
+   
+        public Command GetNextCommand() => new Command(this);
 
-        public void PickUp(Item item) {
-            bag.Add(item);
+        public void Heal() {
+            foreach (HealingPotion p in bag)
+                if (!p.IsUsed()) {
+                    p.Use(this);
+                    bag.Remove(p);
+                }
         }
 
-        public void Use(Item item)
-        {
-            if (!bag.Contains(item) || item.GetUsed()) throw new ArgumentException();
-            item.Use(this);
-            bag.Remove(item);
+        public void Accelerate() {
+            foreach (Crystal c in bag)
+                if (!c.IsUsed()) {
+                    c.Use(this);
+                    bag.Remove(c);
+                }
         }
 
-        override public void Attack(Creature foe)
-        {
+        override public void Attack(Creature foe) {
             if (!(foe is Monster)) throw new ArgumentException();
             Monster foe_ = foe as Monster;
             if (!accelerated)

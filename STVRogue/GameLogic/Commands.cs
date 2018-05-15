@@ -5,79 +5,62 @@ namespace STVRogue
 {
     public class Command
     {
-        private string action;
         private Player player;
         private Node node;
+        private ConsoleKeyInfo key;
+        public bool attack;
 
         public Command (Player player) {
-            WritePossibleActionsToScreen();
-            action = Console.ReadLine();
+            this.key = Console.ReadKey();
             this.player = player;
-            this.node = player.GetLocation();
+            this.node = player.location;
         }
 
         public void ExecuteCommand() {
-            if (action == "attack")
-                Attack();
-            else if (action == "item")
-                UseItem();
-            else if (action == "flee") {
-                Flee();
-            }
-            else {
-                Console.WriteLine("Action not recognized.");
-            }
-        }
-
-        private void Attack() {
-            foreach (Pack p in node.packs)
-                foreach (Monster m in p.members) {
-                    player.Attack(m);
-                }
-        }
-
-        private void UseItem() {
-            WritePossibleItemUsage();
-            string item = Console.ReadLine();
-            SelectItem(item);
-        }
-
-        private void SelectItem(string item) {
-            if (item == "hp potion")
-                UseHPPotion();
-            else if (item == "crystal")
-                UseCrystal();
-        }
-
-        private void UseCrystal() {
-            foreach (Item i in player.GetBag()) 
-                if (i.IsCrystal) {
-                    player.Use(i);
-                    return;
-                }
-        }
-
-        private void UseHPPotion() {
-            foreach (Item i in player.GetBag()) {
-                if (i.IsHealingPotion) {
-                    player.Use(i);
-                    return;
-                }
+            switch (key.Key) {
+                case ConsoleKey.LeftArrow: 
+                    GoLeft();
+                    break;
+                case ConsoleKey.DownArrow:
+                    GoDown();
+                    break;
+                case ConsoleKey.RightArrow:
+                    GoRight();
+                    break;
+                case ConsoleKey.UpArrow:
+                    GoUp();
+                    break;
+                case ConsoleKey.H:
+                    UseHPPotion();
+                    break;
+                case ConsoleKey.C:
+                    UseCrystal();
+                    break;
+                case ConsoleKey.F:
+                    Flee();
+                    break;
+                case ConsoleKey.A:
+                    Attack();
+                    break;
+                default:
+                    break;
             }
         }
 
-        private void Flee() => player.SetLocation(node.neighbors[0]);
+        private void GoUp() => throw new NotImplementedException();
 
-        private void WritePossibleActionsToScreen() {
-            Console.WriteLine("Perform an action by typing: ");
-            Console.WriteLine("1. attack");
-            Console.WriteLine("2. item");
-            Console.WriteLine("3. flee");
-        }
-        private static void WritePossibleItemUsage() {
-            Console.WriteLine("Use an item by writing: ");
-            Console.WriteLine("a. hp potion");
-            Console.WriteLine("b. magic crystal");
-        }
+        private void GoRight() => throw new NotImplementedException();
+
+        private void GoDown() => throw new NotImplementedException();
+
+        private void GoLeft() => throw new NotImplementedException();
+
+        private void UseHPPotion() => player.Heal();
+
+        private void UseCrystal() => player.Accelerate();
+
+        private void Flee() => player.location = node.neighbors[0];
+
+        public void Attack() => attack = true;
     }
 }

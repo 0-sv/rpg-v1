@@ -17,15 +17,15 @@ namespace STVRogue.GameLogic
         [Fact]
         public void IfPlayerIsCreatedStatsAreOK()
         {
-            Assert.Equal(10, p.GetHP());
-            Assert.Equal(5, p.GetAttackRating());
+            Assert.Equal(10, p.HP);
+            Assert.Equal(5, p.AttackRating);
         }
 
         [Fact]
         public void IfPlayerPicksUpItem_BagContainsItem()
         {
             p.PickUp(i);
-            Assert.Equal(p.GetBag()[0], i);
+            Assert.Equal(p.bag[0], i);
         }
     }
 }
