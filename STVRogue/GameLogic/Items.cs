@@ -58,7 +58,7 @@ namespace STVRogue.GameLogic
         public Crystal(String id) : base(id) { }
         override public void Use(Player player) {
             base.Use(player);
-            player.Accelerate();
+            player.accelerated = true;
             if (player.location is Bridge) 
                 player.location.Disconnect(player.location as Bridge);
         }

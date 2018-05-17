@@ -62,34 +62,16 @@ namespace STVRogue.GameLogic
 
         public void Heal()
         {
-            List<HealingPotion> toRemove = new List<HealingPotion>();
-            foreach (HealingPotion p in bag)
-                if (!p.IsUsed())
-                {
-                    p.Use(this);
-                    toRemove.Add(p);
-                }
-            if (toRemove.Count == 0)
-                throw new ArgumentException();
-            for (int x = 0; x < toRemove.Count; x++)
-                bag.Remove(toRemove[x]);
+            HealingPotion p = bag.OfType<HealingPotion>().First();
+            p.Use(this);
+            bag.Remove(p);
         }
 
         public void Accelerate()
         {
-            List<Crystal> toRemove = new List<Crystal>();
-            foreach (Crystal c in bag)
-                if (!c.IsUsed())
-                {
-                    c.Use(this);
-                    toRemove.Add(c);
-                }
-            if (toRemove.Count == 0)
-                throw new ArgumentException();
-            for(int x = 0; x < toRemove.Count; x++)
-            {
-                bag.Remove(toRemove[x]);
-            }
+            Crystal c = bag.OfType<Crystal>().First();
+            c.Use(this);
+            bag.Remove(c);
         }
 
         override public void Attack(Creature foe)

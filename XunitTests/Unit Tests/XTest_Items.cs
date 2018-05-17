@@ -20,8 +20,8 @@ namespace STVRogue.GameLogic
         [Fact]
         public void UseOnEmptyBag()
         {
-            Assert.Throws<ArgumentException>(() => p.Heal());
-            Assert.Throws<ArgumentException>(() => p.Accelerate());
+            Assert.Throws<InvalidOperationException>(() => p.Heal());
+            Assert.Throws<InvalidOperationException>(() => p.Accelerate());
         }
 
         [Fact]
@@ -59,6 +59,14 @@ namespace STVRogue.GameLogic
         public void IfCrystal_IsCrystalReturnTrue()
         {
             Assert.True(c.IsCrystal);
+        }
+
+        [Fact]
+        public void XTest_Crystal_Usage_Causes_Acceleration()
+        {
+            p.PickUp(c);
+            p.Accelerate();
+            Assert.True(p.accelerated);
         }
 
         [Fact]
