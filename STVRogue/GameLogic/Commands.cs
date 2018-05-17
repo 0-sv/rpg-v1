@@ -47,13 +47,13 @@ namespace STVRogue
             }
         }
 
-        private void GoUp() => throw new NotImplementedException();
+        private void GoUp() { throw new NotImplementedException(); }
 
-        private void GoRight() => throw new NotImplementedException();
+        private void GoRight() { throw new NotImplementedException(); }
 
-        private void GoDown() => throw new NotImplementedException();
+        private void GoDown() { throw new NotImplementedException(); }
 
-        private void GoLeft() => throw new NotImplementedException();
+        private void GoLeft() { throw new NotImplementedException(); }
 
         private void UseHPPotion() => player.Heal();
 

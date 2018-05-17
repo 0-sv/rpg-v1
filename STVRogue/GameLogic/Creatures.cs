@@ -46,7 +46,8 @@ namespace STVRogue.GameLogic
         public uint KillPoint;
         public List<Item> bag;
 
-        public Player(string id) {
+        public Player(string id)
+        {
             this.id = id;
             this.AttackRating = 5;
             this.HP = HPbase;
@@ -56,26 +57,43 @@ namespace STVRogue.GameLogic
         }
 
         public void PickUp(Item item) => bag.Add(item);
-   
+
         public Command GetNextCommand() => new Command(this);
 
-        public void Heal() {
+        public void Heal()
+        {
+            List<HealingPotion> toRemove = new List<HealingPotion>();
             foreach (HealingPotion p in bag)
-                if (!p.IsUsed()) {
+                if (!p.IsUsed())
+                {
                     p.Use(this);
-                    bag.Remove(p);
+                    toRemove.Add(p);
                 }
+            if (toRemove.Count == 0)
+                throw new ArgumentException();
+            for (int x = 0; x < toRemove.Count; x++)
+                bag.Remove(toRemove[x]);
         }
 
-        public void Accelerate() {
+        public void Accelerate()
+        {
+            List<Crystal> toRemove = new List<Crystal>();
             foreach (Crystal c in bag)
-                if (!c.IsUsed()) {
+                if (!c.IsUsed())
+                {
                     c.Use(this);
-                    bag.Remove(c);
+                    toRemove.Add(c);
                 }
+            if (toRemove.Count == 0)
+                throw new ArgumentException();
+            for(int x = 0; x < toRemove.Count; x++)
+            {
+                bag.Remove(toRemove[x]);
+            }
         }
 
-        override public void Attack(Creature foe) {
+        override public void Attack(Creature foe)
+        {
             if (!(foe is Monster)) throw new ArgumentException();
             Monster foe_ = foe as Monster;
             if (!accelerated)
@@ -101,3 +119,4 @@ namespace STVRogue.GameLogic
         }
     }
 }
+
