@@ -5,18 +5,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using FsCheck;
+using FsCheck.Xunit;
 
 namespace STVRogue.GameLogic
 {
 	public class XTest_Dungeon
 	{
-		[Fact]
-		public void checkifLevelFunctionWorks()
+			[Property]
+			public Property checkIfValidDungeonAutomated(uint level, uint nodeCapacityMultiplier)
+			{
+				if (level > 0 && nodeCapacityMultiplier > 0)
+				{
+					Dungeon dungeon = new Dungeon(level, nodeCapacityMultiplier);
+					Predicates p = new Predicates();
+					//	Assert.True(p.isValidDungeon(dungeon.startNode, dungeon.exitNode, dungeon.difficultyLevel));
+					return p.isValidDungeon(dungeon.startNode, dungeon.exitNode, dungeon.difficultyLevel).ToProperty();
+				}
+				else return true.ToProperty();
+			}
+		[Property]
+		public Property checkifLevelFunctionWorks(uint level, uint nodeCapacityMultiplier)
 		{
-			uint level = 5;
-			Dungeon dungeon = new Dungeon(level, 2);
-			Assert.Equal(dungeon.Level(dungeon.exitNode), level);
+			if (level > 0 && nodeCapacityMultiplier > 0)
+			{
+				Dungeon dungeon = new Dungeon(level, nodeCapacityMultiplier);
+				return (dungeon.Level(dungeon.exitNode) == level).ToProperty();
+			}
+			else return true.ToProperty();
 		}
+		/*
 		[Fact]
 		public void checkIfDisconnectWorks()
 		{
@@ -33,21 +51,7 @@ namespace STVRogue.GameLogic
 			}
 			
 		}
-
-        [Fact]
-        public void XTest_pack_move()
-        {
-            Dungeon dungeon = new Dungeon(5, 2);
-            Node node = new Node("testnode");
-            node.Connect(dungeon.nodeList[1]);
-            dungeon.nodeList.Add(node);
-            Pack pack = new Pack("testpack", 2);
-            pack.location = dungeon.nodeList[1];
-            pack.dungeon = dungeon;
-            dungeon.nodeList[1].packs = new List<Pack>() { pack };
-            pack.Move(node);
-            Assert.Contains(pack, node.packs);
-            Assert.DoesNotContain(pack, dungeon.nodeList[1].packs);
-        }
+		*/
+       
 	}
 }

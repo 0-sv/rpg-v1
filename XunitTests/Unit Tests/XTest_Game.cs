@@ -11,7 +11,7 @@ namespace STVRogue.GameLogic
 	public class XTest_Game
 	{
 
-		
+		/*
 		[Fact]
 		public void checkIfValidDungeon()
 		{
@@ -19,6 +19,7 @@ namespace STVRogue.GameLogic
 			Predicates p = new Predicates();
 			Assert.True(p.isValidDungeon(dungeon.startNode, dungeon.exitNode, dungeon.difficultyLevel));
 		}
+		*/
 		[Fact]
 		public void checkIfTooManyMonstersThrowsException()
 		{

@@ -152,8 +152,9 @@ namespace STVRogue.GameLogic
 			}
 			return new List<Node>();
 		}
-
+		
 		/* To disconnect a bridge from the rest of the zone the bridge is in. */
+		/*
 		public void Disconnect(Bridge b)
 		{
 			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
@@ -166,7 +167,7 @@ namespace STVRogue.GameLogic
 				}
 			startNode = b;
 		}
-
+		*/
 		/* To calculate the level of the given node. */
 		public uint Level(Node d)
 		{
