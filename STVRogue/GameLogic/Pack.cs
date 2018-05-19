@@ -23,6 +23,7 @@ namespace STVRogue.GameLogic
                 Monster m = new Monster("" + id + "_" + i);
                 members.Add(m);
                 startingHP += m.GetHP();
+                m.pack = this;
             }
         }
 

@@ -27,5 +27,29 @@ namespace STVRogue.GameLogic
             p.PickUp(i);
             Assert.Equal(p.bag[0], i);
         }
+
+        [Fact]
+        public void XTest_Player_Attack()
+        {
+            Node node1 = new Node("node1");
+            Pack pack1 = new Pack("pack", 2);
+            Assert.Equal("pack_0", pack1.members[0].id);
+            Assert.Equal("pack_1", pack1.members[1].id);
+            pack1.location = node1;
+            pack1.members[0].location = node1;
+            pack1.members[1].location = node1;
+            pack1.members[0].HP = 10;
+            pack1.members[1].HP = 7;
+            node1.packs.Add(pack1);
+            Player player = new Player("player1");
+            player.location = node1;
+            player.Attack(pack1.members[0]);
+            Assert.Equal(pack1.members[0].HP, 10 - player.AttackRating);
+            player.accelerated = true;
+            player.Attack(pack1.members[1]);
+            Assert.True(pack1.members.Count == 1);
+            Assert.True(pack1.members[0].id == "pack_1");
+            Assert.Equal(pack1.members[0].HP, 7 - player.AttackRating);
+        }
     }
 }
