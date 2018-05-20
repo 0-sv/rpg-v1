@@ -9,13 +9,13 @@ namespace STVRogue.GameLogic
 {
     public class Pack
     {
-        String id;
+        public string id;
         public List<Monster> members = new List<Monster>();
         public int startingHP = 0;
         public Node location;
         public Dungeon dungeon;
 
-        public Pack(String id, uint n)
+        public Pack(string id, uint n)
         {
             this.id = id;
             for (int i = 0; i < n; i++)
@@ -23,7 +23,7 @@ namespace STVRogue.GameLogic
                 Monster m = new Monster("" + id + "_" + i);
                 members.Add(m);
                 startingHP += m.GetHP();
-                m.pack = this;
+                m.SetPack(this);
             }
         }
 
@@ -65,6 +65,17 @@ namespace STVRogue.GameLogic
             List<Node> path = dungeon.Shortestpath(location, u);
             Move(path[0]);
             path.Remove(path[0]);
+        }
+
+        public int CalculateFleePossibility()
+        {
+            int totalCurrentHP = 0, totalBaseHP = 0;
+            foreach (Monster m in this.members)
+            {
+                totalCurrentHP += m.GetHP();
+                totalBaseHP += m.HPbase;
+            }
+            return (1 - (totalCurrentHP / totalBaseHP)) / 2;
         }
     }
 }

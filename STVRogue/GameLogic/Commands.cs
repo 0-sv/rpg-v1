@@ -61,6 +61,6 @@ namespace STVRogue
 
         private void Flee() => player.location = node.neighbors[0];
 
-        public void Attack() => attack = true;
+        public void Attack() => player.attacking = true;
     }
 }

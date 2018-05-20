@@ -130,6 +130,7 @@ namespace STVRogue.GameLogic
                 player.location.Combat(player);
             else
                 new Command(player).ExecuteCommand();
+
         }
     }
 

@@ -197,20 +197,58 @@ namespace STVRogue.GameLogic
             nd.neighbors.Remove(this);
 		}
 
-		public void Combat(Player player) {
-			Command c = player.GetNextCommand();
+		public void Combat(Player player)
+        {
+            Command c = player.GetNextCommand();
             c.ExecuteCommand();
-
-            if (c.attack)
-                // To do: combat
-                player.Attack(packs[0].members[0]);
-            foreach (Pack p in packs)
-                foreach (Monster m in p.members) {
-                    // To do: combat
-                    m.Attack(player);
-                }
+            SelectMonsterAndAttack(player);
+            MonsterTurn(player);
         }
-	}
+
+        private void MonsterTurn(Player player)
+        {
+            foreach (Pack p in packs)
+            {
+                int fleePossibility = p.CalculateFleePossibility();
+                if (fleePossibility <= 0.5)
+                    p.members[RandomGenerator.rnd.Next(p.members.Count())].Attack(player);
+            }
+        }
+
+        private void SelectMonsterAndAttack(Player player)
+        {
+            if (player.attacking)
+            {
+                ListPossiblePacks();
+                int pack = ReadKey();
+                ListPossibleMonsters(pack);
+                int monster = ReadKey();
+                player.Attack(packs[pack].members[monster]);
+            }
+        }
+
+        private void ListPossibleMonsters(int pack)
+        {
+            Console.WriteLine("Choose which pack to attack: ");
+            int index = 1;
+            foreach (Monster m in packs[pack].members)
+                Console.WriteLine(index.ToString() + ": " + m.id + " press key " + index++.ToString());
+        }
+
+        private void ListPossiblePacks()
+        {
+            Console.WriteLine("Choose which pack to attack: ");
+            int index = 1;
+            foreach (Pack p in packs)
+                Console.WriteLine(index.ToString() + ": " + p.id + " press key " + index++.ToString());
+        }
+
+        private int ReadKey()
+        {
+            ConsoleKeyInfo cfi = Console.ReadKey();
+            return Int32.Parse(cfi.Key.ToString());
+        }
+    }
 
 	public class Bridge : Node
 	{
