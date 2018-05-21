@@ -18,9 +18,14 @@ namespace STVRogue.GameLogic
         Item i = new Item("4");
 
         [Fact]
-        public void UseOnEmptyBag()
+        public void UseHealOnEmptyBag()
         {
             Assert.Throws<InvalidOperationException>(() => p.Heal());
+        }
+
+        [Fact]
+        public void UseAccelerateOnEmptyBag()
+        {
             Assert.Throws<InvalidOperationException>(() => p.Accelerate());
         }
 
@@ -70,9 +75,13 @@ namespace STVRogue.GameLogic
         }
 
         [Fact]
-        public void IfItem_IsHealingPotion_OrCrystal_ReturnFalse()
+        public void IfItem_IsHealingPotionReturnFalse()
         {
             Assert.False(i.IsHealingPotion);
+        }
+        [Fact]
+        public void IfItem_IsCrystal_ReturnFalse()
+        {
             Assert.False(i.IsCrystal);
         }
 
@@ -85,8 +94,6 @@ namespace STVRogue.GameLogic
 
         [Fact]
         public void IfItemIsUsedByPlayer_UsedIsTrue() {
-            Assert.False(hp_potion.IsUsed());
-
             p.PickUp(hp_potion);
             p.Heal();
 

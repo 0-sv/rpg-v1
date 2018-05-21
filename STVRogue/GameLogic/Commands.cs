@@ -6,13 +6,11 @@ namespace STVRogue
     public class Command
     {
         private Player player;
-        private Node node;
         private ConsoleKey key;
 
         public Command (Player player, ConsoleKey key) {
             this.key = key;
             this.player = player;
-            this.node = player.location;
         }
 
         public void Execute() {
@@ -32,7 +30,7 @@ namespace STVRogue
                     player.Accelerate();
                     break;
                 case ConsoleKey.F:
-                    player.location = node.neighbors[0];
+                    player.Flee();
                     break;
                 case ConsoleKey.A:
                     player.attacking = true;

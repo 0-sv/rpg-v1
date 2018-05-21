@@ -77,6 +77,11 @@ namespace STVRogue.GameLogic
             bag.Remove(c);
         }
 
+        public void Flee()
+        {
+            location = location.neighbors[0];
+        }
+
         override public void Attack(Creature foe)
         {
             if (!(foe is Monster)) throw new ArgumentException();
