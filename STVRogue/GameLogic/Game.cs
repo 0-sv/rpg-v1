@@ -129,8 +129,10 @@ namespace STVRogue.GameLogic
             if (player.location.packs.Any())
                 player.location.Combat(player);
             else
-                new Command(player).ExecuteCommand();
-
+            {
+                Command normalCommand = new Command(player, Console.ReadKey().Key);
+                normalCommand.Execute();
+            }
         }
     }
 

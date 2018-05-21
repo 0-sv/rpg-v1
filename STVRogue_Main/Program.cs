@@ -14,8 +14,7 @@ namespace STVRogue {
             player.location = game.dungeon.startNode;
 
             while (true) {
-                string command = Console.ReadLine();
-                Command c = new Command(player);
+                
                 game.Update();
             }
         }

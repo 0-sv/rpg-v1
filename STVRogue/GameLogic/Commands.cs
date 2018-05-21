@@ -7,52 +7,39 @@ namespace STVRogue
     {
         private Player player;
         private Node node;
-        private ConsoleKeyInfo key;
+        private ConsoleKey key;
 
-        public Command (Player player) {
-            this.key = Console.ReadKey();
+        public Command (Player player, ConsoleKey key) {
+            this.key = key;
             this.player = player;
             this.node = player.location;
         }
 
-        public void ExecuteCommand() {
-            switch (key.Key) {
+        public void Execute() {
+            switch (key) {
                 case ConsoleKey.LeftArrow: 
-                    GoLeft();
-                    break;
+                    throw new NotImplementedException();
                 case ConsoleKey.DownArrow:
-                    GoDown();
-                    break;
+                    throw new NotImplementedException();
                 case ConsoleKey.RightArrow:
-                    GoRight();
-                    break;
+                    throw new NotImplementedException();
                 case ConsoleKey.UpArrow:
-                    GoUp();
-                    break;
+                    throw new NotImplementedException();
                 case ConsoleKey.H:
-                    UseHPPotion();
+                    player.Heal();
                     break;
                 case ConsoleKey.C:
-                    UseCrystal();
+                    player.Accelerate();
                     break;
                 case ConsoleKey.F:
-                    Flee();
+                    player.location = node.neighbors[0];
                     break;
                 case ConsoleKey.A:
-                    Attack();
+                    player.attacking = true;
                     break;
                 default:
-                    break;
+                    throw new NotSupportedException();
             }
         }
-
-        private void GoUp() => throw new NotImplementedException(); 
-        private void GoRight() => throw new NotImplementedException(); 
-        private void GoDown() => throw new NotImplementedException(); 
-        private void GoLeft() => throw new NotImplementedException(); 
-        private void UseHPPotion() => player.Heal();
-        private void UseCrystal() => player.Accelerate();
-        private void Flee() => player.location = node.neighbors[0];
-        private void Attack() => player.attacking = true;
     }
 }

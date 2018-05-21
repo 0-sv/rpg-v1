@@ -199,8 +199,8 @@ namespace STVRogue.GameLogic
 
 		public void Combat(Player player)
         {
-            Command c = player.GetNextCommand();
-            c.ExecuteCommand();
+            Command combatCommand = new Command(player, Console.ReadKey().Key);
+            combatCommand.Execute();
             SelectMonsterAndAttack(player);
             MonsterTurn(player);
         }
@@ -224,6 +224,7 @@ namespace STVRogue.GameLogic
                 ListPossibleMonsters(pack);
                 int monster = ReadKey();
                 player.Attack(packs[pack].members[monster]);
+                player.attacking = false;
             }
         }
 

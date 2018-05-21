@@ -63,8 +63,6 @@ namespace STVRogue.GameLogic
 
         public void PickUp(Item item) => bag.Add(item);
 
-        public Command GetNextCommand() => new Command(this);
-
         public void Heal()
         {
             HealingPotion p = bag.OfType<HealingPotion>().First();
