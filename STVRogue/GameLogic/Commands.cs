@@ -8,7 +8,6 @@ namespace STVRogue
         private Player player;
         private Node node;
         private ConsoleKeyInfo key;
-        public bool attack;
 
         public Command (Player player) {
             this.key = Console.ReadKey();
@@ -47,20 +46,13 @@ namespace STVRogue
             }
         }
 
-        private void GoUp() { throw new NotImplementedException(); }
-
-        private void GoRight() { throw new NotImplementedException(); }
-
-        private void GoDown() { throw new NotImplementedException(); }
-
-        private void GoLeft() { throw new NotImplementedException(); }
-
+        private void GoUp() => throw new NotImplementedException(); 
+        private void GoRight() => throw new NotImplementedException(); 
+        private void GoDown() => throw new NotImplementedException(); 
+        private void GoLeft() => throw new NotImplementedException(); 
         private void UseHPPotion() => player.Heal();
-
         private void UseCrystal() => player.Accelerate();
-
         private void Flee() => player.location = node.neighbors[0];
-
-        public void Attack() => player.attacking = true;
+        private void Attack() => player.attacking = true;
     }
 }
