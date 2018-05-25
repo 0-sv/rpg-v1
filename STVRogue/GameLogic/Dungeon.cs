@@ -253,10 +253,12 @@ namespace STVRogue.GameLogic
 
 	public class Bridge : Node
 	{
+		/*
 		List<Node> fromNodes = new List<Node>();
 		public List<Node> toNodes = new List<Node>();
+		*/
 		public Bridge(String id) : base(id) { }
-
+		/*
 		public void ConnectToNodeOfSameZone(Node nd) {
 			base.Connect(nd);
 			fromNodes.Add(nd);
@@ -266,5 +268,6 @@ namespace STVRogue.GameLogic
 			base.Connect(nd);
 			toNodes.Add(nd);
 		}
+		*/
 	}
 }
