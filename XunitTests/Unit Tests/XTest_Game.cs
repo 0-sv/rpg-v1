@@ -111,7 +111,20 @@ namespace STVRogue.GameLogic
             node1.Disconnect(node2);
             Assert.False(p.isReachable(node1, node2));
         }
+		/*
+		[Fact]
 
+		public void testUpdate()
+		{
+			Game game = new Game(10, 5, 50);
+			Pack pack = new Pack("0", 2);
+			pack.location = game.dungeon.nodeList[0];
+			game.dungeon.nodeList[0].packs.Add(pack);
+			game.player.location = game.dungeon.nodeList[0];
+			
+
+		}
+		*/
      
 	}
 }

@@ -45,6 +45,32 @@ namespace STVRogue.GameLogic
 			}
 			else return true.ToProperty();
 		}
+
+		[Property]
+		public Property checkIfDungeonIsSufficientlyRandom(uint level, uint nodeCapacityMultiplier)
+		{
+			if (level > 0 && nodeCapacityMultiplier > 0)
+			{
+				Dungeon dungeon = new Dungeon(level, nodeCapacityMultiplier);
+				Dungeon dungeon2 = new Dungeon(level, nodeCapacityMultiplier);
+				for(int i = 2;i<dungeon.bridges.Count()-2;i++)
+				{
+					if(dungeon.bridges[i]-dungeon.bridges[i-1] == dungeon2.bridges[i] - dungeon2.bridges[i - 1])
+					{
+						for(int j = dungeon.bridges[i - 1]+1;j<= dungeon.bridges[i];j++)
+						{
+							if(dungeon.nodeList[j].neighbors != dungeon2.nodeList[j].neighbors)
+							{
+								return true.ToProperty();
+							}
+						}
+						return false.ToProperty();
+					}
+				}
+				return true.ToProperty();
+			}
+			else return true.ToProperty();
+		}
 		/*
 		[Fact]
 		public void XTest_shortest_path()
@@ -69,6 +95,7 @@ namespace STVRogue.GameLogic
 			Assert.Equal(d.Shortestpath(node1, node5), new List<Node>() { node1, node6, node7, node5 });
 		}
 		*/
+
 		[Fact]
 		public void XTest_shortest_path_unreachable()
 		{
