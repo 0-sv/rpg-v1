@@ -189,7 +189,7 @@ namespace STVRogue.GameLogic
         {
             foreach (Pack p in packs)
             {
-                int fleePossibility = p.CalculateFleePossibility();
+                float fleePossibility = p.CalculateFleePossibility();
                 if (fleePossibility <= 0.5)
                     p.members[RandomGenerator.rnd.Next(p.members.Count())].Attack(player);
             }

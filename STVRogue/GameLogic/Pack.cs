@@ -67,7 +67,7 @@ namespace STVRogue.GameLogic
             path.Remove(path[0]);
         }
 
-        public int CalculateFleePossibility()
+        public float CalculateFleePossibility()
         {
             int totalCurrentHP = 0, totalBaseHP = 0;
             foreach (Monster m in this.members)
@@ -75,7 +75,7 @@ namespace STVRogue.GameLogic
                 totalCurrentHP += m.GetHP();
                 totalBaseHP += m.HPbase;
             }
-            return (1 - (totalCurrentHP / totalBaseHP)) / 2;
+            return (1f - ((float)totalCurrentHP / (float)totalBaseHP)) / 2f;
         }
     }
 }
