@@ -20,7 +20,7 @@ namespace STVRogue.GameLogic
 		Random randomnum = new Random();
 		/* To create a new dungeon with the specified difficult level and capacity multiplier */
 		public Dungeon(uint level, uint nodeCapacityMultiplier)
-		{
+		{ // call functions to fill the nodeList and connect the nodes
 			Logger.log("Creating a dungeon of difficulty level " + level + ", node capacity multiplier " + nodeCapacityMultiplier + ".");
             nodeList = new List<Node>();
 			difficultyLevel = level;
@@ -47,7 +47,7 @@ namespace STVRogue.GameLogic
         }
 
         private void FinalizeConnectionofNonBridgeNodes(List<Node> nodeList)
-        {
+        { // connect nodes on a level randomly
             int amountOfPassedBridges = 0;
             for (int i = 0; i < nodeList.Count - 1; i++)
             {
@@ -69,7 +69,7 @@ namespace STVRogue.GameLogic
         }
 
         private void ConnectBridges(List<Node> nodeList)
-        {
+        { // connect bridges to ensure the dungeon is valid
             for (int i = 0; i < bridges.Length - 1; i++)
             {
                 nodeList[bridges[i + 1]].Connect(nodeList[bridges[i]]);
@@ -77,7 +77,7 @@ namespace STVRogue.GameLogic
         }
 
         private static void ConnectNodes(List<Node> nodeList)
-        {
+        { // connect every node to at least one node to ensure there are no disconnected nodes
             for (int i = 0; i < nodeList.Count - 1; i++)
             {
                 nodeList[i].Connect(nodeList[i + 1]);
@@ -104,16 +104,13 @@ namespace STVRogue.GameLogic
 				bridges[i] = node_id;
 			}
 
-			// some more nodes
-			if (level > 0)
-			{
+			// a dungeon always ends with nodes
 				nodesonthislevel = rnd.Next(3, 5);
 				for (int j = 0; j < nodesonthislevel; j++)
 				{
 					Node n = new Node(node_id++.ToString());
 					nodeList.Add(n);
 				}
-			}
 		}
 
 		/* Return a shortest path between node u and node v */
@@ -152,23 +149,6 @@ namespace STVRogue.GameLogic
 			}
 			return new List<Node>();
 		}
-		
-		/* To disconnect a bridge from the rest of the zone the bridge is in. */
-		/*
-		public void Disconnect(Bridge b)
-		{
-			Logger.log("Disconnecting the bridge " + b.id + " from its zone.");
-				for (int i = 0; i < b.neighbors.Count; i++)
-				{
-					if (Convert.ToInt32(b.neighbors[i].id) < Convert.ToInt32(b.id))
-					{
-						b.neighbors[i].Disconnect(b);
-					}
-				}
-			startNode = b;
-		}
-		*/
-		/* To calculate the level of the given node. */
 		public uint Level(Node d)
 		{
 			return p.countNumberOfBridges(startNode, exitNode);
@@ -253,21 +233,6 @@ namespace STVRogue.GameLogic
 
 	public class Bridge : Node
 	{
-		/*
-		List<Node> fromNodes = new List<Node>();
-		public List<Node> toNodes = new List<Node>();
-		*/
 		public Bridge(String id) : base(id) { }
-		/*
-		public void ConnectToNodeOfSameZone(Node nd) {
-			base.Connect(nd);
-			fromNodes.Add(nd);
-		}
-
-		public void ConnectToNodeOfNextZone(Node nd) {
-			base.Connect(nd);
-			toNodes.Add(nd);
-		}
-		*/
 	}
 }
