@@ -122,35 +122,51 @@ namespace STVRogue.GameLogic
 			return ShortestpathAlgorithm(u, v);
 		}
 
-		private static List<Node> ShortestpathAlgorithm(Node u, Node v)
-		{
-			List<string> closedSet = new List<string>();
-			Queue<Tuple<Node, List<Node>>> paths = new Queue<Tuple<Node, List<Node>>>();
-			closedSet.Add(u.id);
-			foreach (Node n in u.neighbors)
-				if (!closedSet.Contains(n.id))
-				{
-					paths.Enqueue(new Tuple<Node, List<Node>>(n, new List<Node>() { u }));
-					closedSet.Add(n.id);
-				}
+        private static List<Node> ShortestpathAlgorithm(Node u, Node v)
+        {
+            List<string> closedSet = new List<string>();
+            Queue<Node> nextnodes = new Queue<Node>();
+            Dictionary<string, Node> shortest = new Dictionary<string, Node>();
+            shortest.Add(v.id, v);
+            closedSet.Add(v.id);
+            foreach (Node n in v.neighbors)
+            {
+                nextnodes.Enqueue(n);
+                closedSet.Add(n.id);
+                shortest.Add(n.id, v);
+            }
+            while (nextnodes.Count > 0)
+            {
+                Node next = nextnodes.Dequeue();
+                if (next.id == u.id)
+                {
+                    List<Node> shortestpath = new List<Node>();
+                    string nextid = u.id;
+                    while (true)
+                    {
+                        if (nextid == v.id)
+                            return shortestpath;
+                        Node nextnode = shortest[nextid];
+                        shortestpath.Add(nextnode);
+                        nextid = nextnode.id;
+                    }
+                }
+                foreach (Node n in next.neighbors)
+                {
+                    if (closedSet.Contains(n.id))
+                        continue;
+                    if (!shortest.ContainsKey(n.id))
+                    {
+                        closedSet.Add(n.id);
+                        nextnodes.Enqueue(n);
+                        shortest.Add(n.id, next);
+                    }
+                }
+            }
+            return new List<Node>();
+        }
 
-			while (paths.Count != 0)
-			{
-				Tuple<Node, List<Node>> next = paths.Dequeue();
-				next.Item2.Add(next.Item1);
-				if (next.Item1.id == v.id)
-					return next.Item2;
-
-				foreach (Node n in next.Item1.neighbors)
-					if (!closedSet.Contains(n.id))
-					{
-						paths.Enqueue(new Tuple<Node, List<Node>>(n, next.Item2));
-						closedSet.Add(n.id);
-					}
-			}
-			return new List<Node>();
-		}
-		public uint Level(Node d)
+        public uint Level(Node d)
 		{
 			return p.countNumberOfBridges(startNode, exitNode);
 		}

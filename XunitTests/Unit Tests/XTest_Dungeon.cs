@@ -41,7 +41,6 @@ namespace STVRogue.GameLogic
 			if (level > 0 && nodeCapacityMultiplier > 0)
 			{
 				Dungeon dungeon = new Dungeon(level, nodeCapacityMultiplier);
-				//return (dungeon.Shortestpath(dungeon.startNode,dungeon.exitNode).Count() == level+2).ToProperty();
                 int i = 0;
                 int length = 0;
                 bool[] visited = new bool[dungeon.nodeList.Count];
@@ -59,16 +58,14 @@ namespace STVRogue.GameLogic
                         length++;
                     }
                     Node next = nodequeue.Dequeue();
-                    //if (visited[int.Parse(next.id) + 1])
-                    //    continue;
-                    visited[int.Parse(next.id) + 1] = true;
+                    visited[int.Parse(next.id)] = true;
                     if (next.id == dungeon.exitNode.id)
                         return (length == dungeon.Shortestpath(dungeon.startNode, dungeon.exitNode).Count).ToProperty();
                     foreach (Node n in next.neighbors)
                     {
-                        if (visited[int.Parse(n.id) + 1])
+                        if (visited[int.Parse(n.id)])
                             continue;
-                        visited[int.Parse(n.id) + 1] = true;
+                        visited[int.Parse(n.id)] = true;
                         if(i < dungeon.bridges.Length && n.id == dungeon.nodeList[dungeon.bridges[i]].id)
                         {
                             i++;
@@ -76,7 +73,7 @@ namespace STVRogue.GameLogic
                             while (nodequeue.Count > 0)
                             {
                                 Node temp = nodequeue.Dequeue();
-                                visited[int.Parse(temp.id) + 1] = true;
+                                visited[int.Parse(temp.id)] = true;
                             }
                             nextqueue.Enqueue(n);
                             break;
