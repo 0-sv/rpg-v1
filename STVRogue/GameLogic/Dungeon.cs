@@ -69,8 +69,8 @@ namespace STVRogue.GameLogic
         }
 
         private void ConnectBridges(List<Node> nodeList)
-        { // connect bridges to ensure the dungeon is valid
-            for (int i = 0; i < bridges.Length - 1; i++)
+		{ // for now we have connected all bridges to ensure the dungeon is valid
+			for (int i = 0; i < bridges.Length - 1; i++)
             {
                 nodeList[bridges[i + 1]].Connect(nodeList[bridges[i]]);
             }
@@ -88,20 +88,21 @@ namespace STVRogue.GameLogic
 		{
 			Random rnd = new Random();
 			int nodesonthislevel;
-			int node_id = -1;
+			int node_id = 0;
 
 			for (int i = 1; i <= level; i++)
 			{ // between 2 and 4 nodes on each level excluding the bridges
 				nodesonthislevel = rnd.Next(2, 5);
 				for (int j = 0; j < nodesonthislevel; j++)
 				{
-					Node n = new Node(node_id++.ToString());
+					Node n = new Node(node_id.ToString());
+					node_id++;
 					nodeList.Add(n);
 				}
 				// add a bridge after each level
-				Bridge b = new Bridge(node_id++.ToString());
+				Bridge b = new Bridge(node_id.ToString());
 				nodeList.Add(b);
-				bridges[i] = node_id;
+				bridges[i] = node_id++;
 			}
 
 			// a dungeon always ends with nodes
