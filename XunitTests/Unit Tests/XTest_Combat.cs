@@ -7,10 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace XunitTests_STVRogue.Unit_Tests
+namespace STVRogue.GameLogic
 {
-    class XTest_Combat
+    public class XTest_Combat
     {
-
     }
 }

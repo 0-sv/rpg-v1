@@ -1,0 +1,1 @@
+C:\Users\Sebas\Documents\GitHub\Software-Testing-Assignment-1\packages\ReportGenerator.3.1.2\tools\ReportGenerator.exe -reports:"C:\Users\Sebas\Documents\GitHub\Software-Testing-Assignment-1\Reports\xunit_opencovertests.xml" -targetdir:"C:\Users\Sebas\Documents\GitHub\Software-Testing-Assignment-1\Reports"

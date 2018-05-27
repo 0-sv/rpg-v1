@@ -99,6 +99,29 @@ namespace STVRogue.GameLogic
 
             Assert.True(hp_potion.IsUsed());
         }
+
+        [Fact]
+        public void IfPlayerUsesCrystal_ThenBridgeDisconnects() {
+            Bridge b = new Bridge();
+            Node n = new Node();
+
+            b.Connect(n);
+            p.Move(b);
+            p.PickUp(c);
+            p.Accelerate();
+
+            Assert.True(b.neighbors.Any());
+        }
+
+        [Fact]
+        public void ConstructorItemWorks()
+        {
+            Item i = new Item();
+
+            p.PickUp(i);
+
+            Assert.True(p.bag.Any());
+        }
         public static IEnumerable<object[]> HPData =>
             new List<object[]> { 
                 new object[] { 0 },

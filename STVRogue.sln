@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STVRogue", "STVRogue\STVRog
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "STVRogue_Main", "STVRogue_Main\STVRogue_Main.csproj", "{C90736AF-02C9-483E-8D05-B66F233D4AC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTests", "XunitTests\XunitTests.csproj", "{C6FD4179-AC40-44C0-90EF-85978EA63212}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unit Tests", "XunitTests\Unit Tests.csproj", "{C6FD4179-AC40-44C0-90EF-85978EA63212}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

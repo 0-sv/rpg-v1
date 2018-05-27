@@ -267,5 +267,6 @@ namespace STVRogue.GameLogic
 	public class Bridge : Node
 	{
 		public Bridge(String id) : base(id) { }
+        public Bridge () { }
 	}
 }
