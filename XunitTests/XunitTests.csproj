@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Unit Tests\XTest_Combat.cs" />
     <Compile Include="Unit Tests\XTest_Command.cs" />
     <Compile Include="Unit Tests\XTest_Dungeon.cs" />
     <Compile Include="Unit Tests\XTest_Game.cs" />

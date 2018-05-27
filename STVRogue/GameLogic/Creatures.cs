@@ -61,6 +61,14 @@ namespace STVRogue.GameLogic
             this.attacking = false;
         }
 
+        public void Move(Node n)
+        {
+            if (n.items.Any())
+                foreach (Item i in n.items)
+                    this.PickUp(i);
+            this.location = n;
+        }
+
         public void PickUp(Item item) => bag.Add(item);
 
         public void Heal()
@@ -79,7 +87,7 @@ namespace STVRogue.GameLogic
 
         public void Flee()
         {
-            location = location.neighbors[0];
+            Move(location.neighbors[0]);
         }
 
         override public void Attack(Creature foe)

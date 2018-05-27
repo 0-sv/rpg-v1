@@ -161,6 +161,7 @@ namespace STVRogue.GameLogic
 		public List<Node> neighbors = new List<Node>();
 		public List<Pack> packs = new List<Pack>();
 		public List<Item> items = new List<Item>();
+        private bool IsNotPossibleToFlee = false;
 
         public Node() { }
 		public Node(String id) { this.id = id; }
@@ -184,17 +185,6 @@ namespace STVRogue.GameLogic
             SelectMonsterAndAttack(player);
             MonsterTurn(player);
         }
-
-        private void MonsterTurn(Player player)
-        {
-            foreach (Pack p in packs)
-            {
-                float fleePossibility = p.CalculateFleePossibility();
-                if (fleePossibility <= 0.5)
-                    p.members[RandomGenerator.rnd.Next(p.members.Count())].Attack(player);
-            }
-        }
-
         private void SelectMonsterAndAttack(Player player)
         {
             if (player.attacking)
@@ -203,9 +193,27 @@ namespace STVRogue.GameLogic
                 int pack = ReadKey();
                 ListPossibleMonsters(pack);
                 int monster = ReadKey();
-                player.Attack(packs[pack].members[monster]);
-                player.attacking = false;
+
+                try
+                {
+                    player.Attack(packs[pack].members[monster]);
+                    player.attacking = false;
+                }
+
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    SelectMonsterAndAttack(player);
+                }
             }
+        }
+
+        private void ListPossiblePacks()
+        {
+            Console.WriteLine("Choose which pack to attack: ");
+            int index = 1;
+            foreach (Pack p in packs)
+                Console.WriteLine(index.ToString() + ": " + p.id + " press key " + index++.ToString());
         }
 
         private void ListPossibleMonsters(int pack)
@@ -216,12 +224,37 @@ namespace STVRogue.GameLogic
                 Console.WriteLine(index.ToString() + ": " + m.id + " press key " + index++.ToString());
         }
 
-        private void ListPossiblePacks()
+
+        private void MonsterTurn(Player player)
         {
-            Console.WriteLine("Choose which pack to attack: ");
-            int index = 1;
+            if (this.packs.Any() && IsNotPossibleToFlee)
+            {
+                ForcedMonsterTurn(player, packs[0]);
+                return;
+            }
+                
             foreach (Pack p in packs)
-                Console.WriteLine(index.ToString() + ": " + p.id + " press key " + index++.ToString());
+            {
+                float fleePossibility = p.CalculateFleePossibility();
+                
+                if (fleePossibility <= 0.5)
+                {
+                    p.members[RandomGenerator.rnd.Next(p.members.Count())].Attack(player);
+                    IsNotPossibleToFlee = true;
+                    return;
+                }
+                else
+                {
+                    p.Move(this.neighbors[0]);
+                    ForcedMonsterTurn(player, p);
+                }
+            }
+        }
+
+        private void ForcedMonsterTurn(Player player, Pack p)
+        {
+            p.members[RandomGenerator.rnd.Next(p.members.Count())].Attack(player);
+            IsNotPossibleToFlee = false;
         }
 
         private int ReadKey()
