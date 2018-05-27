@@ -41,9 +41,55 @@ namespace STVRogue.GameLogic
 			if (level > 0 && nodeCapacityMultiplier > 0)
 			{
 				Dungeon dungeon = new Dungeon(level, nodeCapacityMultiplier);
-				return (dungeon.Shortestpath(dungeon.startNode,dungeon.exitNode).Count() == level+2).ToProperty();
+				//return (dungeon.Shortestpath(dungeon.startNode,dungeon.exitNode).Count() == level+2).ToProperty();
+                int i = 0;
+                int length = 0;
+                bool[] visited = new bool[dungeon.nodeList.Count];
+                Queue<Node> nodequeue = new Queue<Node>();
+                nodequeue.Enqueue(dungeon.startNode);
+                Queue<Node> nextqueue = new Queue<Node>();
+                while(nodequeue.Count > 0 || nextqueue.Count > 0)
+                {
+                    if (nodequeue.Count == 0)
+                    {
+                        while (nextqueue.Count > 0)
+                        {
+                            nodequeue.Enqueue(nextqueue.Dequeue());
+                        }
+                        length++;
+                    }
+                    Node next = nodequeue.Dequeue();
+                    //if (visited[int.Parse(next.id) + 1])
+                    //    continue;
+                    visited[int.Parse(next.id) + 1] = true;
+                    if (next.id == dungeon.exitNode.id)
+                        return (length == dungeon.Shortestpath(dungeon.startNode, dungeon.exitNode).Count).ToProperty();
+                    foreach (Node n in next.neighbors)
+                    {
+                        if (visited[int.Parse(n.id) + 1])
+                            continue;
+                        visited[int.Parse(n.id) + 1] = true;
+                        if(i < dungeon.bridges.Length && n.id == dungeon.nodeList[dungeon.bridges[i]].id)
+                        {
+                            i++;
+                            length++;
+                            while (nodequeue.Count > 0)
+                            {
+                                Node temp = nodequeue.Dequeue();
+                                visited[int.Parse(temp.id) + 1] = true;
+                            }
+                            nextqueue.Enqueue(n);
+                            break;
+                        }
+                        else
+                        {
+                            nextqueue.Enqueue(n);
+                        }
+                    }
+                }
 			}
 			else return true.ToProperty();
+            return false.ToProperty();
 		}
 
 		[Property]
