@@ -50,7 +50,7 @@ namespace STVRogue.GameLogic
             node1.packs.Add(pack);
             Assert.Throws<ArgumentException>(() => pack.Move(node2));
         }
-		/*
+
         [Fact]
         public void Xtest_pack_move_over_capacity()
         {
@@ -70,7 +70,6 @@ namespace STVRogue.GameLogic
                 sw.Dispose();
             }
         }
-		*/
 
         [Property]
         public void XTest_pack_flee_chance(int seed)
