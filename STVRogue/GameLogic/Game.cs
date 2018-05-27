@@ -30,6 +30,7 @@ namespace STVRogue.GameLogic
 			amountOfMonstersPerLevel = new uint[difficultyLevel + 1];
 			packs = addpacks(difficultyLevel, nodeCapacityMultiplier, numberOfMonsters);
 			player = new Player("1");
+            player.Move(dungeon.startNode);
 			int totalMonsterHP = calculateTotalMonsterHP();
 			items = additems(totalMonsterHP, dungeon.bridges[dungeon.bridges.Length - 1], player.HPbase);
 		}

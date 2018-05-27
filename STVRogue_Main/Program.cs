@@ -9,10 +9,8 @@ namespace STVRogue {
     class Program {
         static void Main(string[] args) {
             Game game = new Game(5, 2, 10);
-            Player player = new Player("Test Player");
-            player.Move(game.dungeon.startNode);
 
-            while (player.HP != 0) {
+            while (game.player.HP != 0) {
                 game.Update();
             }
         }
